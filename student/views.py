@@ -17,3 +17,5 @@ class NotOnCampusView(TemplateView):
 
 class ViewRecordView(TemplateView):
     template_name = 'view_record.html'
+
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Global Admin</title>
+
+
+        <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="topnav" id="myTopnav">
+          <a href="/location_view">Home</a>
+          <a href="/admin_profile">Profile</a>
+        </div>
+
+
+    {% block content %}
+
+
+    {% endblock %}
+
+
+
+
+
+        <script src="{% static "global_admin/js/global_home.js" %}"></script>
+
+    </body>
+</html>

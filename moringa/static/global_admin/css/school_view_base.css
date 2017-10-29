@@ -1,0 +1,77 @@
+.logo {
+    width: 100%;
+    height: 100%;
+    /*float: right;*/
+    /*padding: 0 20px 0;*/
+}
+
+.content-row {
+    width: 100%;
+    height: 100%;
+}
+
+.circles {
+    width: 100%;
+    height: 100%;
+    /*padding-top: 50px;*/
+    display:inline-block;
+    /*margin: auto;*/
+
+
+}
+
+.content-row {
+    text-align: center;
+    /*position: relative;*/
+}
+
+/*h2 {*/
+    /*width: 150px;*/
+    /*position: relative;*/
+    /*padding: inherit;*/
+    /*font-size: 120%;*/
+/*}*/
+
+#localAdmin {
+    width: 15%;
+    height: 15%;
+    display: inline-block;
+    text-align: center;
+    padding: 0 90px 0;
+    position: relative;
+}
+
+#localAdmin h2 {
+    text-align: center;
+}
+
+#students {
+    width: 15%;
+    height: 15%;
+    display: inline-block;
+    text-align: center;
+    padding: 0 90px 0;
+    position: relative;
+}
+
+#schoolInfo {
+    width: 15%;
+    height: 15%;
+    display: inline-block;
+    text-align: center;
+    padding: 0 90px 0;
+    position: relative;
+}
+
+#imageCaption {
+    font-family: "Apple SD Gothic Neo";
+}
+
+#title {
+    text-align: center;
+    padding-top: 100px;
+}
+
+body{
+    margin:0px;
+}

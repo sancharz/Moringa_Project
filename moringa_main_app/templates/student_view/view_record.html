@@ -1,0 +1,75 @@
+{% extends "student_view/student_view_base.html" %}
+
+
+{% block title %}
+
+<h1>View Records</h1>
+
+{% endblock %}
+
+
+{% block attendance_policy %}
+<style>
+
+    /*#table_headers {*/
+    /*font-family: arial, sans-serif;*/
+    /*border-collapse: collapse;*/
+    /*width: 90%;*/
+    /*text-align: center;*/
+    /*}*/
+
+    /*td, th {*/
+    /*border: 1px solid #dddddd;*/
+    /*text-align: left;*/
+    /*padding: 8px;*/
+    /*}*/
+
+
+</style>
+
+<table class="table">
+    <tr>
+        <td><b>Type</b></td>
+        <td><b>Date</b></td>
+        <td><b>Time</b></td>
+        <td><b>Reason(if applicable)</b></td>
+    </tr>
+
+    <tr class="warning">
+        <td>Late</td>
+        <td>10/18/17</td>
+        <td>8:50 AM</td>
+        <td> - </td>
+    </tr>
+    <tr class="warning">
+        <td>Late</td>
+        <td>10/21/17</td>
+        <td>9:30 AM</td>
+        <td>Slept through alarm</td>
+    </tr>
+    <tr class="warning">
+        <td>Late</td>
+        <td>10/24/17</td>
+        <td>9:15 AM</td>
+        <td> - </td>
+    </tr>
+    <tr class="danger">
+        <td>Absence</td>
+        <td>10/31/17</td>
+        <td> - </td>
+        <td>Came down with a cold</td>
+    </tr>
+</table>
+
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+{% endblock %}
+

@@ -1,0 +1,37 @@
+{% extends "student_view/student_user_info_base.html" %}
+
+
+{% block title %}
+
+<h1>Profile Info</h1>
+
+{% endblock %}
+
+
+{% block content %}
+<style>
+div.information {
+    font-family: 'Times New Roman', Times, serif
+    h1 {
+        font-size: 125%;
+    }
+    p {
+        font-size: 100;
+    }
+}
+</style>
+
+<div class="information">
+    <h3>First Name</h3>
+    <p>Bob</p>
+    <h3>Last Name</h3>
+    <p>Smith</p>
+    <h3>Email</h3>
+    <p>junismagical@college.harvard.edu</p>
+    <h3>Course</h3>
+    <p>Moringa Core</p>
+    <h3>Cohort</h3>
+    <p>183874</p>
+</div>
+
+{% endblock %}

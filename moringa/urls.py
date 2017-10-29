@@ -19,7 +19,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('student.urls'))
+    url(r'^', include('moringa_main_app.urls')),
+
 ]
 
 urlpatterns += staticfiles_urlpatterns()

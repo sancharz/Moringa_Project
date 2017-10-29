@@ -1,0 +1,49 @@
+{% extends "global_admin_view/global_home.html" %}
+
+{% load staticfiles %}
+
+
+
+{% block content %}
+
+    <link href= "{% static "global_admin/css/school_view_base.css" %}" rel="stylesheet">
+
+    <div id="title">
+        <h1 id="imageCaption">Select Group for {% block location %}{% endblock %} </h1>
+    </div>
+
+
+    <div class="content-row">
+        <div class="circles">
+
+            <figure id="localAdmin">
+                <a href="{% block localAdmin %}{% endblock %}">
+                    <img class="logo" src="{% static "global_admin/images/teacher.png" %}"/>
+                </a>
+                    <figcaption id="imageCaption">Local Admins</figcaption>
+
+            </figure>
+
+            <figure id="students">
+                <a href="{% block students %}{% endblock %}">
+                    <img class="logo" src="{% static "global_admin/images/student.png" %}"/>
+                </a>
+                    <figcaption id="imageCaption">Students</figcaption>
+                </a>
+            </figure>
+
+            <figure id="schoolInfo">
+                <a href="{% block schoolInfo %}{% endblock %}">
+                    <img class="logo" src="{% static "global_admin/images/school.png" %}"/>
+                </a>
+                    <figcaption id="imageCaption">School</figcaption>
+                </a>
+            </figure>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+

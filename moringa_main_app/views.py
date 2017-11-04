@@ -12,17 +12,15 @@ class NotOnCampusView(TemplateView):
     template_name = 'student_view/not_on_campus.html'
 class ViewRecordView(TemplateView):
     template_name = 'student_view/view_record.html'
-class StudentInfoView(TemplateView):
-    template_name = 'student_view/student_user_info.html'
-
+class StudentProfileView(TemplateView):
+    template_name = 'student_view/student_profile.html'
 
 
 #VIEWS FOR GLOBAL ADMIN
 class LocationView (TemplateView):
     template_name = "global_admin_view/location_view.html"
-class AdminProfileView (TemplateView):
-    template_name = "global_admin_view/admin_profile.html"
-
+class GlobalAdminProfileView (TemplateView):
+    template_name = "global_admin_view/global_admin_profile.html"
 
 class KenyaAndEastView (TemplateView):
     template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_and_east_africa.html"
@@ -33,7 +31,6 @@ class KenyaAndEastStudentsView (TemplateView):
 class KenyaAndEastSchoolView (TemplateView):
     template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_school.html"
 
-
 class NigeriaView (TemplateView):
     template_name = "global_admin_view/school_views/nigeria/nigeria.html"
 class NigeriaLocalAdminsView (TemplateView):
@@ -42,7 +39,6 @@ class NigeriaStudentsView (TemplateView):
     template_name = "global_admin_view/school_views/nigeria/nigeria_students.html"
 class NigeriaSchoolView (TemplateView):
     template_name = "global_admin_view/school_views/nigeria/nigeria_school.html"
-
 
 class GhanaView (TemplateView):
     template_name = "global_admin_view/school_views/ghana/ghana.html"
@@ -53,8 +49,6 @@ class GhanaStudentsView (TemplateView):
 class GhanaSchoolView (TemplateView):
     template_name = "global_admin_view/school_views/ghana/ghana_school.html"
 
-
-
 class InternationalOtherView (TemplateView):
     template_name = "global_admin_view/school_views/international_and_other/international_and_other.html"
 class InternationalOtherLocalAdminsView (TemplateView):
@@ -63,6 +57,19 @@ class InternationalOtherStudentsView (TemplateView):
     template_name = "global_admin_view/school_views/international_and_other/international_and_other_students.html"
 class InternationalOtherSchoolView (TemplateView):
     template_name = "global_admin_view/school_views/international_and_other/international_and_other_school.html"
+
+
+#VIEWS FOR LOCAL ADMIN
+class LocalAdminHomeView (TemplateView):
+    template_name = "local_admin_view/local_admin_home.html"
+class LocalAdminProfileView (TemplateView):
+    template_name = "local_admin_view/local_admin_profile.html"
+class AttendanceHistoryView (TemplateView):
+    template_name = "local_admin_view/attendance_history.html"
+class StudentInformationView (TemplateView):
+    template_name = "local_admin_view/student_information.html"
+
+
 
 
 

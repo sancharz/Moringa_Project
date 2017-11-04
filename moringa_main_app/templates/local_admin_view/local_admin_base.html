@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Global Admin</title>
+
+
+        <link href= "{% static "local_admin/css/local_home.css" %}" rel="stylesheet">
+         <link href= "{% static "local_admin/css/sidebar_base.css" %}" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    </head>
+
+    <body>
+        <div class="topnav" id="myTopnav">
+          <a href="/local_home">Home</a>
+          <a href="/local_admin_profile">Profile</a>
+        </div>
+    <body>
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="/local_home">Today</a>
+            <a href="/attendance_history">Attendance History</a>
+            <a href="/student_information">Student Information</a>
+        </div>
+
+
+        {% block table %}{% endblock %}
+
+
+        <div id="menu-icon">
+            <span style="float:bottom;font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+        </div>
+
+
+
+
+
+        <div class="logoContainer">
+            <img id="logo" src="{% static "local_admin/images/logo.png" %}"/>
+        </div>
+
+
+    {% block content %}
+    {% endblock %}
+
+
+        <script src="{% static "local_admin/js/local_home.js" %}"></script>
+        <script src="{% static "global_admin/js/students_base.js" %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    </body>
+</html>

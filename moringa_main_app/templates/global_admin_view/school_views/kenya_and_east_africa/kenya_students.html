@@ -1,7 +1,9 @@
-{% extends "global_admin_view/school_views/students_base.html" %}
+{% extends "global_admin_view/school_views/sidebar_base.html" %}
 {% load staticfiles %}
 
-{% block content %}
+{% block table %}
+    <link href= "{% static "global_admin/css/sidebar_base.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <h1>Kenya: Students</h1>
 
             <div class="container">
@@ -14,7 +16,6 @@
                 <th>Last</th>
                 <th>Time</th>
                 <th>Status</th>
-
               </tr>
             </thead>
             <tbody>

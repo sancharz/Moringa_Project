@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "global_admin_view/school_views/sidebar_base.html" %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block table %}
+    <link href= "{% static "global_admin/css/sidebar_base.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <h1>Kenya: School Info</h1>
+
+            <div class="container">
+          <h2>Valid IP Addresses</h2>
+{#          <p>The .table-striped class adds zebra-stripes to a table:</p>#}
+          <table id="table" class="table table-striped">
+            <thead>
+              <tr>
+                <th>Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>192.1.1.2</td>
+              </tr>
+              <tr>
+                <td>134.5.6.2</td>
+              </tr>
+              <tr>
+                <td>212.42.3.1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+{% endblock %}

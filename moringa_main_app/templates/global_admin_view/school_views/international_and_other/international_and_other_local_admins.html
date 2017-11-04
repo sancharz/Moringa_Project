@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "global_admin_view/school_views/sidebar_base.html" %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block table %}
+    <link href= "{% static "global_admin/css/sidebar_base.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <h1>International and Other: Local Admins</h1>
+
+            <div class="container">
+          <h2>Local Administrators</h2>
+{#          <p>The .table-striped class adds zebra-stripes to a table:</p>#}
+          <table id="table" class="table table-striped">
+            <thead>
+              <tr>
+                <th>First</th>
+                <th>Last</th>
+                <th>Program</th>
+                <th>Cohort</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John</td>
+                <td>Doe</td>
+                <td>Prep</td>
+                <td>3, 5</td>
+              </tr>
+              <tr>
+                <td>Mary</td>
+                <td>Moe</td>
+                <td>Core</td>
+                <td>1, 2</td>
+              </tr>
+              <tr>
+                <td>July</td>
+                <td>Dooley</td>
+                <td>Prep</td>
+                <td>4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+{% endblock %}

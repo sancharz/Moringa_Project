@@ -1,41 +1,43 @@
-{% extends "global_admin_view/school_views/sidebar_base.html" %}
+{% extends "local_admin_view/local_admin_base.html" %}
 {% load staticfiles %}
 
-{% block table %}
-    <link href= "{% static "global_admin/css/sidebar_base.css" %}" rel="stylesheet">
+{% block content %}
+    <link href= "{% static "local_admin/css/sidebar_base.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <h1>Ghana: Local Admins</h1>
+    <div id="titleContainer">
+        <h1>Attendance History</h1>
+    </div>
 
-            <div class="container">
-          <h2>Local Administrators</h2>
+    <div class="container">
+          <h2>Cohort 1</h2>
 {#          <p>The .table-striped class adds zebra-stripes to a table:</p>#}
           <table id="table" class="table table-striped">
             <thead>
               <tr>
                 <th>First</th>
                 <th>Last</th>
-                <th>Program</th>
-                <th>Cohort</th>
+                <th>Time</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>John</td>
                 <td>Doe</td>
-                <td>Prep</td>
-                <td>3, 5</td>
+                <td>10:30 AM</td>
+                <td>Late</td>
               </tr>
               <tr>
                 <td>Mary</td>
                 <td>Moe</td>
-                <td>Core</td>
-                <td>1, 2</td>
+                <td>10:30 AM</td>
+                <td>Late</td>
               </tr>
               <tr>
                 <td>July</td>
                 <td>Dooley</td>
-                <td>Prep</td>
-                <td>4</td>
+                <td>8:00 AM</td>
+                <td>On Time</td>
               </tr>
             </tbody>
           </table>

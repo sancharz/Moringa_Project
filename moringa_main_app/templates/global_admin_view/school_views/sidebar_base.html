@@ -1,36 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "global_admin_view/global_home.html" %}
 {% load staticfiles %}
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href= "{% static "global_admin/css/students_base.css" %}" rel="stylesheet">
+
+{% block content %}
+
+    <link href= "{% static "global_admin/css/sidebar_base.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-
-
-</head>
 
     <body>
 
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#">View Students</a>
-            <a href="#">Edit Information</a>
+            <a href="#">View</a>
+            <a href="#">Edit</a>
         </div>
 
 
-        {% block content %}{% endblock %}
+        {% block table %}{% endblock %}
 
         <div id="menu-icon">
             <span style="float:bottom;font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
         </div>
-
-
-
-
-
-
 
 
     <script src="{% static "global_admin/js/students_base.js" %}"></script>
@@ -38,4 +27,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     </body>
-</html>
+
+
+{% endblock %}

@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
+# VIEW FOR LOGIN
+class LogInView(TemplateView):
+    template_name = 'login_view/login.html'
+
 # VIEWS FOR STUDENT_VIEW
 class HomePageView(TemplateView):
     template_name = 'student_view/index.html'
@@ -18,7 +22,7 @@ class StudentProfileView(TemplateView):
 
 #VIEWS FOR GLOBAL ADMIN
 class LocationView (TemplateView):
-    template_name = "global_admin_view/location_view.html"
+    template_name = "global_admin_view/global_home.html"
 class GlobalAdminProfileView (TemplateView):
     template_name = "global_admin_view/global_admin_profile.html"
 

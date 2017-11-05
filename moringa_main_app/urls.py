@@ -3,7 +3,7 @@ from moringa_main_app import views
 
 urlpatterns = [
     #URLS for LOGIN
-
+    url(r'^login$', views.LogInView.as_view()),
 
     #URLS for Student View
     url(r'^$', views.HomePageView.as_view()),
@@ -15,7 +15,7 @@ urlpatterns = [
 
 
     # URLS for Global Admin View
-    url(r'^location_view$', views.LocationView.as_view()),
+    url(r'^global_home$', views.LocationView.as_view()),
     url(r'^global_admin_profile$', views.GlobalAdminProfileView.as_view()),
     url(r'^kenya_and_east_africa$', views.KenyaAndEastView.as_view()),
     url(r'^kenya_and_east_africa_local_admins$', views.KenyaAndEastLocalAdminsView.as_view()),

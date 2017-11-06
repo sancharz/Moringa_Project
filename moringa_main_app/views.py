@@ -1,5 +1,40 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+
+
+#LOGIN - Emily Hong and Jun
+    #Get request - displaying the login page
+    #POst - read in email and password 
+    #authenticate (if not correct - login failed)
+    #if password correct - determine what type of user from all users
+    #redirect to appropriate page - student/local/admin
+    #if user is student - take note of time/IP address and render appropraiate page based on time
+
+#SUBMIT Button - Late
+    #writes to the attendace table based on the attendance 
+
+#Local_admin
+    #query the database (SQL statements requoired)
+    #dynamically display info
+
+#Global_admin
+    # pick location and redirect to location info
+
+#global_admin view info
+    #query the database (SQL statements requoired)
+    #dynamically display info
+
+
+
+
+
+
+
+
+
+
+
 
 # VIEWS FOR STUDENT_VIEW
 class HomePageView(TemplateView):

@@ -1,5 +1,17 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.http import HttpResponse
+import datetime
+
+# developer admin page
+def index(request):
+    context = "some context here"
+    return render(request, 'templates/student_view/index.html', context)
+
+# login
+def login(request):
+    context = "some context here"
+    return render(request, 'templates/student_view/index.html', context)
 
 # VIEWS FOR STUDENT_VIEW
 class HomePageView(TemplateView):

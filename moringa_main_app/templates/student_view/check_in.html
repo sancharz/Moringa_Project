@@ -1,44 +1,14 @@
 {% extends "student_view/student_view_base.html" %}
 
+{% block main_content %}
+    <h1>Student Attendance -- You're  <span style="color: #ff0000"><b>(student_status){{ student_status }}</b></span></h1>
+    <p>some (message){{ message }} goes here depending on the student's status</p>
 
-{% block title %}
-
-<h1>Check-in Page</h1>
-
-{% endblock %}
-
-
-
-{% block subtitle %}
-
-<p>Welcome!</p>
-
-{% endblock %}
-
-
-
-
-{% block content %}
-<style>
-    .checkin{
-        margin: auto;
-        text-align: center;
-    }
-</style>
-
-    <div>
-
-        <p style="text-align:center; padding-top: 100px">You are on time. Please click the Check-in Button to mark your attendance.</p>
-
-        <p>
-            <div class="checkin">
-                <button type="button" class="btn btn-success btn-lg">Check me in!</button>
-            </div>
-        </p>
-
-    </div>
-
-</div>
-
+    {% if student_status != "on time" %}
+        <textarea id="form" class="form-control" rows="3" placeholder="Enter a reason (pls)"></textarea>
+        <br>
+    {% endif %}
+    <!-- button -->
+    <button id="submit_button" type="button" class="btn btn-success btn-lrg">Submit Attendance</button>
 
 {% endblock %}

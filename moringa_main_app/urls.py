@@ -3,7 +3,7 @@ from moringa_main_app import views
 
 urlpatterns = [
     #URLS for LOGIN
-    url(r'^login$', views.LogInView.as_view()),
+    # url(r'^login$', auth_views.login, {'template_name': 'login.html'} name='login'),
 
     #URLS for Student View
     url(r'^$', views.HomePageView.as_view()),

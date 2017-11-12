@@ -1,39 +1,30 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required<<<<<<< emilyh
+from django.http import HttpResponse
+from moringa_main_app.models import Attendance
+import datetime
 
+# developer admin page
+def index(request):
+    return render(request, 'student_view/index.html', None)
 
-#LOGIN - Emily Hong and Jun
-    #Get request - displaying the login page
-    #POst - read in email and password 
-    #authenticate (if not correct - login failed)
-    #if password correct - determine what type of user from all users
-    #redirect to appropriate page - student/local/admin
-    #if user is student - take note of time/IP address and render appropraiate page based on time
+# login
+def login(request):
+    return render(request, 'student_view/index.html', None)
 
-#SUBMIT Button - Late
-    #writes to the attendace table based on the attendance 
-
-#Local_admin
-    #query the database (SQL statements requoired)
-    #dynamically display info
-
-#Global_admin
-    # pick location and redirect to location info
-
-#global_admin view info
-    #query the database (SQL statements requoired)
-    #dynamically display info
-
-
-
-
-
-
-
-
-
-
+# check in
+def check_in(request):
+    status = "on time"
+    if True: #condition for checking time
+        status = "tardy"
+    if request.method == 'POST':
+        if not request.POST.get('excuse'):
+            return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
+        query = Attendance(userId=request.user, tardy=True, absent=False, excuse=request.POST.get('excuse'))
+        query.save()
+        # redirect to 'congrats, you've submitted' page
+    return render(request, 'student_view/check_in.html', {'student_status':status})
 
 
 # VIEWS FOR STUDENT_VIEW

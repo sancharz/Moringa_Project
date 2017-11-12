@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required<<<<<<< emilyh
 from django.http import HttpResponse
 from moringa_main_app.models import Attendance
 import datetime
@@ -24,7 +25,7 @@ def check_in(request):
         query.save()
         # redirect to 'congrats, you've submitted' page
     return render(request, 'student_view/check_in.html', {'student_status':status})
-        
+
 
 # VIEWS FOR STUDENT_VIEW
 class HomePageView(TemplateView):

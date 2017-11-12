@@ -1,14 +1,14 @@
 {% extends "student_view/student_view_base.html" %}
 
 {% block main_content %}
-    <h1>Student Attendance -- You're  <span style="color: #ff0000"><b>(student_status){{ student_status }}</b></span></h1>
+    <h1>Student Attendance -- You're  <span style="color: #ff0000"><b>{{ student_status }}</b></span>.</h1>
     <p>some (message){{ message }} goes here depending on the student's status</p>
 
-    {% if student_status != "on time" %}
-        <textarea id="form" class="form-control" rows="3" placeholder="Enter a reason (pls)"></textarea>
-        <br>
-    {% endif %}
-    <!-- button -->
-    <button id="submit_button" type="button" class="btn btn-success btn-lrg">Submit Attendance</button>
-
+    <form action="/check_in/" method="post">
+        {% csrf_token %}
+            <div class="form-group" {% if student_status == "on time" %}style="display:none"{% endif %}>
+                <textarea name="excuse" class="form-control" rows="3" placeholder="Enter a reason (pls)" style="width:500px;{% if error %}border:solid 2px red{% endif %}"></textarea>
+            </div>
+        <button type="submit" class="btn btn-success btn-lrg">Submit Attendance</button>
+    </form>
 {% endblock %}

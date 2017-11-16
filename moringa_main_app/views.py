@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required<<<<<<< emilyh
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from moringa_main_app.models import Attendance
+from moringa_main_app.models import Students
+from django.contrib.auth.models import User
 import datetime
 
 # developer admin page
@@ -11,12 +13,22 @@ def index(request):
 
 # login
 def login(request):
-    return render(request, 'student_view/index.html', None)
+    # disclaimer: this probably isn't the best way to create a user
+    user = User.objects.create_user('johnnnnnn', 'johnpassword', 'lennon@thebeatles.com')
+    user.first_name = 'John'
+    user.last_name = 'Lennon'
+    user.save()
+    request.session['id'] = user.id
+    s = Students(id=0, program='asdf', cohort='fda', location='asdffdas', userId_id=user.id)
+    s.save()
+    #if request.method == 'POST':
+    request.session['student_status'] = 'tardy'
+    return render(request, 'student_view/index.html', {'students':Students.objects.all()})
 
 # check in
 def check_in(request):
     status = "on time"
-    if True: #condition for checking time
+    if request.session['student_status'] == 'tardy': #condition for checking time
         status = "tardy"
     if request.method == 'POST':
         if not request.POST.get('excuse'):
@@ -25,6 +37,11 @@ def check_in(request):
         query.save()
         # redirect to 'congrats, you've submitted' page
     return render(request, 'student_view/check_in.html', {'student_status':status})
+
+def student_info(request):
+    student = Students.objects.all().filter(userId_id=request.session['id'])
+    user = User.objects.all().filter(id=request.session['id'])
+    return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
 
 
 # VIEWS FOR STUDENT_VIEW

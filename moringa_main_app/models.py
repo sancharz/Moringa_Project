@@ -21,7 +21,7 @@ class LocalAdmin(models.Model):
 
 
 class Attendance(models.Model):
-    userId = models.ForeignKey(User, on_delete=models.CASCADE)
+    suserId = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
     tardy = models.BooleanField()
     absent = models.BooleanField()

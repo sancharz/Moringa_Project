@@ -5,12 +5,14 @@ urlpatterns = [
     #URLS for Student View
     url(r'^$', views.index, name='index'),
     url(r'^check_in/$', views.check_in, name='check_in'),
+    url(r'^login/$', views.login, name='login'),
     #url(r'^$', views.HomePageView.as_view()),
     #url(r'^check_in/$', views.CheckInView.as_view()),
     url(r'^check_in_late/$', views.CheckInLateView.as_view()),
     url(r'^not_on_campus/$', views.NotOnCampusView.as_view()),
     url(r'^view_record/$', views.ViewRecordView.as_view()),
-    url(r'^student_info/$', views.StudentInfoView.as_view()),
+    #url(r'^student_info/$', views.StudentInfoView.as_view()),
+    url(r'^student_info/$', views.student_info, name='student_user_info'),
 
 
     # URLS for Global Admin View

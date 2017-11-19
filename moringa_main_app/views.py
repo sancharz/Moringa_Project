@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from moringa_main_app.forms import SignUpForm
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 #LOGIN - Emily Hong and Jun
@@ -10,6 +14,46 @@ from django.contrib.auth.decorators import login_required
     #if password correct - determine what type of user from all users
     #redirect to appropriate page - student/local/admin
     #if user is student - take note of time/IP address and render appropraiate page based on time
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid(): # probably discard this
+            user = form.save()
+            user.refresh_from_db()
+            if form.cleaned_data.get('user_type') == 'ga':
+                user.save()
+                return render(request, 'registration/signup.html', {'form': form})
+            elif form.cleaned_data.get('user_type') == 'la':
+                user.localadmin.program = form.cleaned_data.get('program')
+                user.localadmin.location = form.cleaned_data.get('location')
+                user.save()        
+                return render(request, 'registration/signup.html', {'form': form})
+            user.students.program = form.cleaned_data.get('program')
+            user.students.location = form.cleaned_data.get('location')
+            user.students.cohort = form.cleaned_data.get('cohort')
+            #user.groups = form.cleaned_data.get('user_type')
+            user.save()
+            return render(request, 'registration/signup.html', {'form': form})
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+def logout(request):
+    return render(request, 'logout.html')
+
+##def login(request):
+##    if request.method == 'POST':
+##        username = request.POST.get('username')
+##        password = request.POST.get('password')
+##        user = authenticate(username=username, password=password)
+##        if user is not None and user.is_active:
+##            login(request, user)
+##            return HttpResponseRedirect('/home.html')# Redirect to a success page.
+##        else:
+##            return HttpResponseRedirect('/login')# Return a 'disabled account' error message
+##    return
+
 
 #SUBMIT Button - Late
     #writes to the attendace table based on the attendance 

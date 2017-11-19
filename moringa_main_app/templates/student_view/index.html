@@ -15,8 +15,14 @@
         <h1>Views For Global Admin (sample design)</h1>
         <p> <a href="/location_view">Global Admin home</a></p>
 
-    </body>
+        {% for student in students %}
+            {{ student.cohort }}
+        {% endfor %}
 
+        <form action="/login/" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-lrg">Click me!!!!</button>
+        </form>
     </body>
 
 </html>

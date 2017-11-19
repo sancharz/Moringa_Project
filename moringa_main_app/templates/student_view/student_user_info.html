@@ -1,37 +1,16 @@
-{% extends "student_view/student_user_info_base.html" %}
+{% extends "student_view/student_view_base.html" %}
 
-
-{% block title %}
-
-<h1>Profile Info</h1>
-
-{% endblock %}
-
-
-{% block content %}
-<style>
-div.information {
-    font-family: 'Times New Roman', Times, serif
-    h1 {
-        font-size: 125%;
-    }
-    p {
-        font-size: 100;
-    }
-}
-</style>
-
-<div class="information">
-    <h3>First Name</h3>
-    <p>Bob</p>
-    <h3>Last Name</h3>
-    <p>Smith</p>
-    <h3>Email</h3>
-    <p>junismagical@college.harvard.edu</p>
-    <h3>Course</h3>
-    <p>Moringa Core</p>
-    <h3>Cohort</h3>
-    <p>183874</p>
-</div>
-
+{% block main_content %}
+    <h1>Profile Information</h1>
+    <br>
+    <p><b>First Name:</b> {{ first_name }}</p>
+    <p><b>Last Name:</b> {{ last_name }}</p>
+    <br>
+    <p><b>Program:</b> {{ program }}</p>
+    <p><b>Cohort:</b> {{ cohort }}</p>
+    <p><b>Location:</b> {{ location }}</p>
+    <br>
+    <p><b>Email:</b> {{ email }}</p>
+    <br>
+    <button id="submit_button" type="button" class="btn">Edit Information</button>
 {% endblock %}

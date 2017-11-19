@@ -15,6 +15,10 @@ from django.http import HttpResponseRedirect, HttpResponse
     #redirect to appropriate page - student/local/admin
     #if user is student - take note of time/IP address and render appropraiate page based on time
 
+# developer admin page
+def index(request):
+    return render(request, 'student_view/index.html', None)
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -42,17 +46,23 @@ def signup(request):
 def logout(request):
     return render(request, 'logout.html')
 
-##def login(request):
-##    if request.method == 'POST':
-##        username = request.POST.get('username')
-##        password = request.POST.get('password')
-##        user = authenticate(username=username, password=password)
-##        if user is not None and user.is_active:
-##            login(request, user)
-##            return HttpResponseRedirect('/home.html')# Redirect to a success page.
-##        else:
-##            return HttpResponseRedirect('/login')# Return a 'disabled account' error message
-##    return
+# check in
+def check_in(request):
+    status = "on time"
+    if request.session['student_status'] == 'tardy': #condition for checking time
+        status = "tardy"
+    if request.method == 'POST':
+        if not request.POST.get('excuse'):
+            return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
+        query = Attendance(userId=request.user, tardy=True, absent=False, excuse=request.POST.get('excuse'))
+        query.save()
+        # redirect to 'congrats, you've submitted' page
+    return render(request, 'student_view/check_in.html', {'student_status':status})
+
+def student_info(request):
+    student = Students.objects.all().filter(userId_id=request.session['id'])
+    user = User.objects.all().filter(id=request.session['id'])
+    return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
 
 
 #SUBMIT Button - Late
@@ -68,15 +78,6 @@ def logout(request):
 #global_admin view info
     #query the database (SQL statements requoired)
     #dynamically display info
-
-
-
-
-
-
-
-
-
 
 
 

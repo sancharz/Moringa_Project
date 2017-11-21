@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import UserCreationForm
 from moringa_main_app.forms import SignUpForm
 from django.http import HttpResponseRedirect, HttpResponse
@@ -55,10 +56,23 @@ def logout(request):
 # login
 def login(request):
     if request.method == 'GET':
+        print('gotem')
         return render(request, 'registration/login.html', None)
     if request.method == 'POST':
-        # UPDATE SESSION STUFF TO KEEP USER LOGGED IN
-        return check_in('GET')
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            if hasattr(user, 'localadmin') is not None:
+                return redirect('/check_in/')
+            elif hasattr(user, 'students'):
+                return redirect('/view_record/')
+            else:
+                return redirect('/location_view/')
+        else:
+            return redirect('/login/')
+         
 
 # check in for students
 def check_in(request):

@@ -8,7 +8,6 @@ urlpatterns = [
     #URLS for Student View
     url(r'^$', views.index, name='index'),
     url(r'^check_in/$', views.check_in, name='check_in'),
-    url(r'^login/$', views.login, name='login'),
     #url(r'^$', views.HomePageView.as_view()),
     #url(r'^check_in/$', views.CheckInView.as_view()),
     url(r'^check_in_late/$', views.CheckInLateView.as_view()),
@@ -38,7 +37,7 @@ urlpatterns = [
     url(r'^international_and_other_students$', views.InternationalOtherStudentsView.as_view()),
     url(r'^international_and_other_school$', views.InternationalOtherSchoolView.as_view()),
     url(r'^signup/$', views.signup, name='signup'),
-    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     
 ]

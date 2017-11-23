@@ -1,28 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset = "UTF-8">
         <title>Title</title>
     </head>
+    <!-- insert the logo for moringa school here - sancharz -->
+    <div>
+        <img src = "global_admin/images/logo.png" />
+    </div>
 
     <body>
-        <h1>Views for Students (sample designs for meeting)</h1>
-        <p> <a href="/check_in/">View1: Student check in</a></p>
+        <!-- format this to make it look nicer - sancharz -->
+        <h1> Welcome the Moringa School Attendance Tracking Web Portal </h1>
+
+        <!-- add links to log in and register - sancharz -->
+        <p> <a href = "/registration/signup.html"> REGISTER</a> </p>
+        <p> <a href = "/registration/login.html"> LOG IN</a> </p>
+
+        <!-- this is a little bit irrelevant now so comment out - sancharz -->
+       <!--  <p> <a href="/check_in/">View1: Student check in</a></p>
         <p> <a href="/check_in_late/">View2: Student check in late</a></p>
         <p> <a href="/not_on_campus/">View3: Student not on campus</a></p>
         <p> <a href="/view_record/">View4: Records page</a></p>
 
         <h1>Views For Global Admin (sample design)</h1>
-        <p> <a href="/location_view">Global Admin home</a></p>
-
-        {% for student in students %}
+        <p> <a href="/location_view">Global Admin home</a></p> -->
+        <!-- not sure what this for loop and button is for so comment out- sancharz -->
+        <!-- {% for student in students %}
             {{ student.cohort }}
         {% endfor %}
 
         <form action="/login/" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-success btn-lrg">Click me!!!!</button>
-        </form>
+        </form> -->
     </body>
 
 </html>

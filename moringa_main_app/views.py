@@ -126,19 +126,6 @@ def student_info(request):
     return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
 
 
-#SUBMIT Button - Late
-    #writes to the attendace table based on the attendance 
-
-#Local_admin
-    #query the database (SQL statements requoired)
-    #dynamically display info
-
-#Global_admin
-    # pick location and redirect to location info
-
-#global_admin view info
-    #query the database (SQL statements requoired)
-    #dynamically display info
 
 
 

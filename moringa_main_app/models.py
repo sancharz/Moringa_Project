@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 #Choices
+
 #Cohort
 #The first element in each tuple is the actual value to be set on the model, 
 #the second element is the human-readable name
@@ -16,15 +17,13 @@ COHORT_CHOICES = (
 ('5', 'COHORT 5'),
 )
 
-
 #Program
-
 PROGRAM_CHOICES = (
 ('prep', "MORINGA PREP"),
 ('core', 'MORINGA CORE'),
 )
 
-#Can add more locatIONS
+#Can add more locations
 #Location
 LOCATION_CHOICES = (
 ('nairobi', "NAIROBI, KENYA"),

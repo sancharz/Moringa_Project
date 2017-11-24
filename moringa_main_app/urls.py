@@ -5,8 +5,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    #index page URL Mapping
+    #index page URL Mapping - there are two for now but one will have to be deleted
     url(r'^$', views.index, name='index'),
+    #url(r'^index/$', views.index, name='index'),
 
     #LOGIN AND SIGN-UP URL mappings 
     url(r'^signup/$', views.signup, name='signup'),
@@ -19,8 +20,11 @@ urlpatterns = [
     url(r'^student_info/$', views.student_info, name='student_user_info'),
 
     #LOCAL ADMIN URL Mappings 
+    url(r'^view_profile/$', views.view_profile, name='admin_profile'),
+    url(r'^local_home/$', views.LocalHome.as_view()),
 
     #GLOBAL ADMIN URL Mappings 
+    url(r'^global_home/$', views.GlobalHome.as_view()),
     url(r'^location_view$', views.LocationView.as_view()),
     url(r'^admin_profile$', views.AdminProfileView.as_view()),
 

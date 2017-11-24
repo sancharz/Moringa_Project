@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
@@ -50,7 +51,7 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 def logout(request):
-    return render(request, 'logout.html')
+    return render(request, 'registration/login.html')
 
 # login
 def login(request):
@@ -77,12 +78,12 @@ def login(request):
                 return redirect('/check_in/')
             if query_la:
                 #user is a la
-                return redirect('/view_record/')
+                return redirect('/local_home/')
             if query_ga:
                 #user is a ga
-                return redirect('/location_view/')
+                return redirect('/global_home/')
 
-            #commented this code out to test if alternative works - sancharz
+            #commented this code out to test if alternative above works - sancharz to Romil
             # if hasattr(user, 'localadmin') is not None:
             #     return redirect('/check_in/')
             # elif hasattr(user, 'students'):
@@ -142,13 +143,18 @@ def check_in(request):
     # redirect to 'congrats, you've submitted' page
     return render(request, 'student_view/check_in.html', {'student_status':status})
 
+#viewing a student profile is read only so there is no POST
+#student cannot edit their profile information
 @login_required
 def student_info(request):
-    student = Students.objects.all().filter(userId_id=request.session['id'])
-    user = User.objects.all().filter(id=request.session['id'])
-    return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
+    student = Students.objects.filter(user = request.user) #made changes -sancharz
+    cur_user = User.objects.filter(username = request.user)
+    #return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
+    return render(request, 'student_view/student_user_info.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':cur_user[0].email})
 
-#the below is not yet complete
+
+#the function below is not yet complete - NOT DONE
+#SELA AND  EMILY LU
 #viewing student records for everyone
 @login_required
 def view_records(request):
@@ -157,12 +163,27 @@ def view_records(request):
         user = request.user.username
         return render(request, 'registration/login.html', None)
 
-
+#this function is not yet done - NOT DONE
+#SELA and EMILY LU
+#Task - should be able to view and edit their information
+#this is only for local admin and global admin (similar to student_info() above)
 @login_required
 def view_profile(request):
-    pass
-    #this is for all users 
-    #all users should be able to post as well as get 
+    #task - also have get or post 
+    #query the database
+    local_a = LocalAdmin.objects.filter(user = request.user)
+    global_a = GlobalAdmin.objects.filter(user = request.user)
+    cur_user = User.objects.filter(username = request.user)
+    #only two of these query sets will not be empty
+    #user can't be local_a and global_a at the same time
+    if local_a:
+        return render(request, 'global_admin_view/admin_profile.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': local_a[0].program, 'cohort': "", 'location': local_a[0].location, 'email':cur_user[0].email})
+    if global_a:
+        #note that global admin does not have program, cohort or location
+        return render(request, 'global_admin_view/admin_profile.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': "haibo", 'cohort': "", 'location': "", 'email': cur_user[0].email})
+
+
+    
 
 
 
@@ -183,51 +204,62 @@ class StudentInfoView(TemplateView):
 
 
 #VIEWS FOR GLOBAL ADMIN
+class GlobalHome (TemplateView):
+    template_name = "global_admin_view/global_home.html"
+
 class LocationView (TemplateView):
     template_name = "global_admin_view/location_view.html"
+
 class AdminProfileView (TemplateView):
     template_name = "global_admin_view/admin_profile.html"
 
 
-class KenyaAndEastView (TemplateView):
-    template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_and_east_africa.html"
-class KenyaAndEastLocalAdminsView (TemplateView):
-    template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_local_admins.html"
-class KenyaAndEastStudentsView (TemplateView):
-    template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_students.html"
-class KenyaAndEastSchoolView (TemplateView):
-    template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_school.html"
+#Views for Local Admin
+class LocalHome (TemplateView):
+    template_name = "local_admin/localadmin_home.html"
 
 
-class NigeriaView (TemplateView):
-    template_name = "global_admin_view/school_views/nigeria/nigeria.html"
-class NigeriaLocalAdminsView (TemplateView):
-    template_name = "global_admin_view/school_views/nigeria/nigeria_local_admins.html"
-class NigeriaStudentsView (TemplateView):
-    template_name = "global_admin_view/school_views/nigeria/nigeria_students.html"
-class NigeriaSchoolView (TemplateView):
-    template_name = "global_admin_view/school_views/nigeria/nigeria_school.html"
+#commented out the brute-force coded classes as we will not be using them - sancharz
+
+# class KenyaAndEastView (TemplateView):
+#     template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_and_east_africa.html"
+# class KenyaAndEastLocalAdminsView (TemplateView):
+#     template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_local_admins.html"
+# class KenyaAndEastStudentsView (TemplateView):
+#     template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_students.html"
+# class KenyaAndEastSchoolView (TemplateView):
+#     template_name = "global_admin_view/school_views/kenya_and_east_africa/kenya_school.html"
 
 
-class GhanaView (TemplateView):
-    template_name = "global_admin_view/school_views/ghana/ghana.html"
-class GhanaLocalAdminsView (TemplateView):
-    template_name = "global_admin_view/school_views/ghana/ghana_local_admins.html"
-class GhanaStudentsView (TemplateView):
-    template_name = "global_admin_view/school_views/ghana/ghana_students.html"
-class GhanaSchoolView (TemplateView):
-    template_name = "global_admin_view/school_views/ghana/ghana_school.html"
+# class NigeriaView (TemplateView):
+#     template_name = "global_admin_view/school_views/nigeria/nigeria.html"
+# class NigeriaLocalAdminsView (TemplateView):
+#     template_name = "global_admin_view/school_views/nigeria/nigeria_local_admins.html"
+# class NigeriaStudentsView (TemplateView):
+#     template_name = "global_admin_view/school_views/nigeria/nigeria_students.html"
+# class NigeriaSchoolView (TemplateView):
+#     template_name = "global_admin_view/school_views/nigeria/nigeria_school.html"
+
+
+# class GhanaView (TemplateView):
+#     template_name = "global_admin_view/school_views/ghana/ghana.html"
+# class GhanaLocalAdminsView (TemplateView):
+#     template_name = "global_admin_view/school_views/ghana/ghana_local_admins.html"
+# class GhanaStudentsView (TemplateView):
+#     template_name = "global_admin_view/school_views/ghana/ghana_students.html"
+# class GhanaSchoolView (TemplateView):
+#     template_name = "global_admin_view/school_views/ghana/ghana_school.html"
 
 
 
-class InternationalOtherView (TemplateView):
-    template_name = "global_admin_view/school_views/international_and_other/international_and_other.html"
-class InternationalOtherLocalAdminsView (TemplateView):
-    template_name = "global_admin_view/school_views/international_and_other/international_and_other_local_admins.html"
-class InternationalOtherStudentsView (TemplateView):
-    template_name = "global_admin_view/school_views/international_and_other/international_and_other_students.html"
-class InternationalOtherSchoolView (TemplateView):
-    template_name = "global_admin_view/school_views/international_and_other/international_and_other_school.html"
+# class InternationalOtherView (TemplateView):
+#     template_name = "global_admin_view/school_views/international_and_other/international_and_other.html"
+# class InternationalOtherLocalAdminsView (TemplateView):
+#     template_name = "global_admin_view/school_views/international_and_other/international_and_other_local_admins.html"
+# class InternationalOtherStudentsView (TemplateView):
+#     template_name = "global_admin_view/school_views/international_and_other/international_and_other_students.html"
+# class InternationalOtherSchoolView (TemplateView):
+#     template_name = "global_admin_view/school_views/international_and_other/international_and_other_school.html"
 
 
 

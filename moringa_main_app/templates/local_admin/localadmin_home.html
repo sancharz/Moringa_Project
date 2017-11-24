@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+
+    <head>
+        <meta charset="UTF-8">
+        <title> Local Adminstrator </title>
+
+
+        <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="topnav" id="myTopnav">
+          <!-- the link below needs to be changed once the template has been made - sancharz -->
+          <a href= "/location_view">View Student Records</a>
+          <a href= "/view_profile">Profile</a>
+        </div>
+        <h1> Welcome Local Adminstrator </h1>
+
+
+    {% block content %}
+
+    {% endblock %}
+
+        <script src="{% static "global_admin/js/global_home.js" %}"></script>
+
+    </body>

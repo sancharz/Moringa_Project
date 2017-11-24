@@ -4,12 +4,38 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
+#Choices
+#Cohort
+#The first element in each tuple is the actual value to be set on the model, 
+#the second element is the human-readable name
+COHORT_CHOICES = (
+('1', 'COHORT 1'),
+('2', 'COHORT 2'),
+('3', 'COHORT 3'),
+('4', 'COHORT 4'),
+('5', 'COHORT 5'),
+)
+
+
+#Program
+
+PROGRAM_CHOICES = (
+('prep', "MORINGA PREP"),
+('core', 'MORINGA CORE'),
+)
+
+#Can add more locatIONS
+#Location
+LOCATION_CHOICES = (
+('nairobi', "NAIROBI, KENYA"),
+('mumbai', 'MUMBAI, INDIA'),
+)
 
 class Students(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    program = models.CharField(max_length=100)
-    cohort = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
+    program = models.CharField(max_length = 10, choices = PROGRAM_CHOICES ) #changed the arguments here
+    cohort = models.CharField(max_length = 1, choices = COHORT_CHOICES)#changed the arguments here
+    location = models.CharField(max_length = 20, choices = LOCATION_CHOICES)#changed the arguments here
 
 
 class GlobalAdmin(models.Model):
@@ -18,8 +44,8 @@ class GlobalAdmin(models.Model):
 
 class LocalAdmin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=100)
-    program = models.CharField(max_length=100)
+    location = models.CharField(max_length=20, choices = LOCATION_CHOICES)#changed the arguments here
+    program = models.CharField(max_length=10, choices = PROGRAM_CHOICES)#changed the arguments here
 
 
 class Attendance(models.Model):

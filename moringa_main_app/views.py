@@ -12,15 +12,9 @@ from datetime import datetime
 # for getting ip address
 from ipware.ip import get_ip
 
-MORINGA_IP_ADDRESS = '65.112.8.133' # emily h's ip address to test
+#MORINGA_IP_ADDRESS = '65.112.8.133' # emily h's ip address to test
+MORINGA_IP_ADDRESS = '127.0.0.1' # sancharz's ip address to test
 
-#LOGIN - Emily Hong and Jun
-    #Get request - displaying the login page
-    #POst - read in email and password 
-    #authenticate (if not correct - login failed)
-    #if password correct - determine what type of user from all users
-    #redirect to appropriate page - student/local/admin
-    #if user is student - take note of time/IP address and render appropraiate page based on time
 
 # developer admin page
 def index(request):
@@ -56,7 +50,7 @@ def logout(request):
 # login
 def login(request):
     if request.method == 'GET':
-        print('gotem')
+        print('gotem') #debugging
         return render(request, 'registration/login.html', None)
     if request.method == 'POST':
         username = request.POST['username']
@@ -75,6 +69,7 @@ def login(request):
          
 
 # check in for students
+@login_required
 def check_in(request):
     if request.method == 'GET':
         # make time_status && location_status 
@@ -86,6 +81,7 @@ def check_in(request):
 
         # get user's IP address --> https://github.com/un33k/django-ipware
         ip = get_ip(request)
+        print("THIS IS THE IP ADDRESS FOLKS", end = "") #debugging
         print(ip) # debugging
         if not ip: # if IP address not retrieved (error check)
             print("we don't have an IP address for user")
@@ -115,18 +111,24 @@ def check_in(request):
         # TO DO -- write into databases
         if not request.POST.get('excuse'):
             return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
-        query = Attendance(userId=request.user, tardy=True if status == "tardy" else False, absent=True if status == "absent" else False, excuse=request.POST.get('excuse'))
+        query = Attendance(userId=request.user, tardy = True if status == "tardy" else False, absent=True if status == "absent" else False, excuse=request.POST.get('excuse'))
         query.save()
     # redirect to 'congrats, you've submitted' page
     return render(request, 'student_view/check_in.html', {'student_status':status})
 
+@login_required
 def student_info(request):
     student = Students.objects.all().filter(userId_id=request.session['id'])
     user = User.objects.all().filter(id=request.session['id'])
     return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
 
-
-
+#viewing student records for everyone
+@login_required
+def view_records(request):
+    if request.method == GET:
+        #determine which user is trying to view records
+        user = request.user.username
+        return render(request, 'registration/login.html', None)
 
 
 # VIEWS FOR STUDENT_VIEW

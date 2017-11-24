@@ -6,6 +6,11 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import UserCreationForm
 from moringa_main_app.forms import SignUpForm
 from django.http import HttpResponseRedirect, HttpResponse
+#for database queries 
+from moringa_main_app.models import Attendance
+from moringa_main_app.models import Students
+from moringa_main_app.models import GlobalAdmin
+from moringa_main_app.models import LocalAdmin
 
 # for getting time
 from datetime import datetime
@@ -55,16 +60,37 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username = username, password = password)
         if user is not None:
+            #authentication passed so login the user
             auth_login(request, user)
-            if hasattr(user, 'localadmin') is not None:
+            #query the database to determine the type of user - sancharz
+            #assuming that the appropraite tables were 
+            #**not too confident if my arguments are correct - sancharz
+            query_s = Students.objects.filter(user = request.user)
+            query_la = LocalAdmin.objects.filter(user = request.user)
+            query_ga = GlobalAdmin.objects.filter(user = request.user)
+            #redirect to a success page - sancharz
+            #check if a query set is empty - sancharz
+            if query_s:
+                #user is a student 
                 return redirect('/check_in/')
-            elif hasattr(user, 'students'):
+            if query_la:
+                #user is a la
                 return redirect('/view_record/')
-            else:
+            if query_ga:
+                #user is a ga
                 return redirect('/location_view/')
+
+            #commented this code out to test if alternative works - sancharz
+            # if hasattr(user, 'localadmin') is not None:
+            #     return redirect('/check_in/')
+            # elif hasattr(user, 'students'):
+            #     return redirect('/view_record/')
+            # else:
+            #     return redirect('/location_view/')
         else:
+            # Return an 'invalid login' error message. NOT DONE
             return redirect('/login/')
          
 
@@ -111,7 +137,7 @@ def check_in(request):
         # TO DO -- write into databases
         if not request.POST.get('excuse'):
             return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
-        query = Attendance(userId=request.user, tardy = True if status == "tardy" else False, absent=True if status == "absent" else False, excuse=request.POST.get('excuse'))
+        query = Attendance(userId= request.user, tardy = True if status == "tardy" else False, absent = True if status == "absent" else False, excuse=request.POST.get('excuse'))
         query.save()
     # redirect to 'congrats, you've submitted' page
     return render(request, 'student_view/check_in.html', {'student_status':status})
@@ -122,6 +148,7 @@ def student_info(request):
     user = User.objects.all().filter(id=request.session['id'])
     return render(request, 'student_view/student_user_info.html', {'first_name': user[0].first_name, 'last_name': user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':user[0].email})
 
+#the below is not yet complete
 #viewing student records for everyone
 @login_required
 def view_records(request):
@@ -129,6 +156,14 @@ def view_records(request):
         #determine which user is trying to view records
         user = request.user.username
         return render(request, 'registration/login.html', None)
+
+
+@login_required
+def view_profile(request):
+    pass
+    #this is for all users 
+    #all users should be able to post as well as get 
+
 
 
 # VIEWS FOR STUDENT_VIEW

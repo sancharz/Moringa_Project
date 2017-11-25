@@ -12,7 +12,7 @@ urlpatterns = [
     #LOGIN AND SIGN-UP URL mappings 
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^login/$', views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^logout/$', views.logout, name='logout'),
 
     #STUDENT URL Mappings 
     url(r'^check_in/$', views.check_in, name='check_in'),

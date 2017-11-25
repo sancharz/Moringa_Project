@@ -1,1 +1,12 @@
-{% extends 'registration/base.html' %}
+{% extends "registration/base.html" %}
+
+{% load staticfiles %}
+
+{% block main_content %}
+    <div class="container">
+         <form class="form-signin">
+                <img class="displayed" src="{% static "global_admin/images/logo.png" %}" alt="Moringa Logo" align="middle">
+                <p>You have successfully logged out</p>      
+        </form>
+    </div> <!-- container -->
+{% endblock %}

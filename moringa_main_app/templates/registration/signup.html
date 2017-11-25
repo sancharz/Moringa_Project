@@ -1,10 +1,26 @@
-{% extends 'registration/base.html' %}
+{% extends "registration/base.html" %}
 
-{% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-  </form>
+{% load staticfiles %}
+
+{% block main_content %}
+    <div class="container">
+         <form class="form-signin" method="post" action="/signup/">
+             {% csrf_token %}
+                <img class="displayed" src="{% static "global_admin/images/logo.png" %}" alt="Moringa Logo" align="middle">
+                <label for="inputEmail" class="sr-only">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required>
+                <!-- unsure of how the sign up page will change depending on which kind of user is registering, 
+                    but this template can be easily altered to adjust for that -->
+                <label for="inputProgram" class="sr-only">Program</label>
+                <input name="program" id="inputProgram" class="form-control" placeholder="Program" required>
+                <label for="inputLocation" class="sr-only">Location</label>
+                <input name="confirmLocation" id="inputLocation" class="form-control" placeholder="Location" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>        
+        </form>
+    </div> <!-- container -->
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 {% endblock %}

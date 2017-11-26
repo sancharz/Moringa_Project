@@ -1,1 +1,11 @@
-{% extends 'registration/base.html' %}
+{% extends "registration/base.html" %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+
+{% block content %}
+    <div class="container">
+        <img class="displayed" src="{% static "global_admin/images/logo.png"%}" alt="Moringa Logo">
+        <p>You have successfully logged out.</p>
+    </div>
+{% endblock %}

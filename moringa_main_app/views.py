@@ -93,57 +93,104 @@ def login(request):
         else:
             # Return an 'invalid login' error message. NOT DONE
             return redirect('/login/')
-         
-
-# check in for students
+# check in for students - Anna Lou
 @login_required
 def check_in(request):
-    if request.method == 'GET':
-        # make time_status && location_status 
-        # time_status == 1 (on time); == 0 (late)
-        # location_status == 1 (on campus); == 0 (not on campus)
-        # check location
-        message = "" # initialize a variable to hold a message based on student status
-        status = "" # initialize a variable to hold a student status
+    message = "" # initialize a variable to hold a message based on student status
+    status = "" # initialize a variable to hold a student status
+    tardy = False
+    absent = False
 
-        # get user's IP address --> https://github.com/un33k/django-ipware
-        ip = get_ip(request)
-        print("THIS IS THE IP ADDRESS FOLKS", end = "") #debugging
-        print(ip) # debugging
-        if not ip: # if IP address not retrieved (error check)
-            print("we don't have an IP address for user")
-        
-        if ip == MORINGA_IP_ADDRESS: # on campus
-            location_status = 1
-        else: # not on campus
-            location_status = 0
-        
-        if location_status == 0: # if not on campus, render absent page
-            status = "Not on Campus"
-            message = "You are not currently on campus. If applicable, please leave an excuse for your absence."
-            return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
-        else: # only check time if student is on campus
-            # check time
-            if datetime.now().time() <= datetime.strptime('080000', '%H%M%S').time(): # on time
-                time_status = 1
-                status = "On Time"
-                message = "you are on time. please submit your attendance!"
-                return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
-            else: # tardy
-                time_status = 0
-                status = "Tardy"
-                message = "you are tardy, please submit your attendance and leave an excuse for your tardiness."
-                return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
+    # get user's IP address --> https://github.com/un33k/django-ipware
+    ip = get_ip(request)
+    if not ip: # if IP address not retrieved (error check)
+        print("we don't have an IP address for user")
+    #print("THIS IS THE IP ADDRESS FOLKS", ip) #debugging
+    
+    if ip == MORINGA_IP_ADDRESS: # on campus
+        # check time
+        if datetime.now().time() <= datetime.strptime('080000', '%H%M%S').time(): # on time
+            status = "On Time"
+            message = "You are on time. Please submit your attendance."
+            if request.method == 'GET': # render on time page
+                return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+        else: # tardy
+            status = "Tardy"
+            tardy = True
+            message = "You are tardy. Please leave an excuse for your tardiness."
+            if request.method == 'GET': # render tardy page
+                return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+    else: # not on campus
+        status = "Not on Campus"
+        absent = True
+        message = "You are not currently on campus. If applicable, please leave an excuse for your absence."
+        if request.method == 'GET': # render absent page
+            return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+    
     if request.method == 'POST':
-        # TO DO -- write into databases
-        if not request.POST.get('excuse'):
-            return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
-        query = Attendance(userId= request.user, tardy = True if status == "tardy" else False, absent = True if status == "absent" else False, excuse=request.POST.get('excuse'))
-        query.save()
-    # redirect to 'congrats, you've submitted' page
-    return render(request, 'student_view/check_in.html', {'student_status':status})
+        excuse = ""
+        if status != "On Time": # should be an excuse
+            if not request.POST.get('excuse'): # missing excuse
+                return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message, 'error':True})
+            else: # excuse exists
+                excuse = request.POST.get('excuse')
 
-#viewing a student profile is read only so there is no POST
+        query = Attendance(tardy=tardy, absent=absent, excuse=excuse, user_id=request.user.id) 
+        query.save() # save into attendance database
+
+    # redirect to 'congrats, you've submitted' page or w/e
+    return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+        
+
+# # check in for students
+# @login_required
+# def check_in(request):
+#     if request.method == 'GET':
+#         # make time_status && location_status 
+#         # time_status == 1 (on time); == 0 (late)
+#         # location_status == 1 (on campus); == 0 (not on campus)
+#         # check location
+#         message = "" # initialize a variable to hold a message based on student status
+#         status = "" # initialize a variable to hold a student status
+
+#         # get user's IP address --> https://github.com/un33k/django-ipware
+#         ip = get_ip(request)
+#         print("THIS IS THE IP ADDRESS FOLKS", end = "") #debugging
+#         print(ip) # debugging
+#         if not ip: # if IP address not retrieved (error check)
+#             print("we don't have an IP address for user")
+        
+#         if ip == MORINGA_IP_ADDRESS: # on campus
+#             location_status = 1
+#         else: # not on campus
+#             location_status = 0
+        
+#         if location_status == 0: # if not on campus, render absent page
+#             status = "Not on Campus"
+#             message = "You are not currently on campus. If applicable, please leave an excuse for your absence."
+#             return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
+#         else: # only check time if student is on campus
+#             # check time
+#             if datetime.now().time() <= datetime.strptime('080000', '%H%M%S').time(): # on time
+#                 time_status = 1
+#                 status = "On Time"
+#                 message = "you are on time. please submit your attendance!"
+#                 return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
+#             else: # tardy
+#                 time_status = 0
+#                 status = "Tardy"
+#                 message = "you are tardy, please submit your attendance and leave an excuse for your tardiness."
+#                 return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
+#     if request.method == 'POST':
+#         # TO DO -- write into databases
+#         if not request.POST.get('excuse'):
+#             return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
+#         query = Attendance(userId= request.user, tardy = True if status == "tardy" else False, absent = True if status == "absent" else False, excuse=request.POST.get('excuse'))
+#         query.save()
+#     # redirect to 'congrats, you've submitted' page
+#     return render(request, 'student_view/check_in.html', {'student_status':status})
+
+#viewing a student profile is read only so there is no POST - Sela and Emily Lu
 #student cannot edit their profile information
 @login_required
 def student_info(request):

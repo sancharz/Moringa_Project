@@ -1,0 +1,60 @@
+{% extends "global_admin_view/global_base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+ <h1> Edit Adminstrator Profile Information</h1>
+    <form action="/edit_profile" method="post">
+        {% csrf_token %}
+
+        {% if user_type == "local_admin" %}
+          First name:<br>
+          <input type="text" name="firstname" value= {{ first_name }} >
+          <br>
+          Last name:<br>
+          <input type="text" name="lastname" value= {{ last_name }}>
+          <br>
+          Program:<br>
+          <input type="text" name="program" value= {{ program }}>
+          <br>
+          Cohort:<br>
+          <input type="text" name="cohort" value= {{ cohort }}>
+          <br>
+          Location:<br>
+          <input type="text" name="location" value= {{ location }}>
+          <br>
+          Email:<br>
+          <input type="text" name="email" value= {{ email }}>
+          <br>
+          <br>
+          <input type="submit" value="Edit">
+        {% endif %}
+
+        {% if user_type == "local_admin" %}
+          First name:<br>
+          <input type="text" name="firstname" value= {{ first_name }} >
+          <br>
+          Last name:<br>
+          <input type="text" name="lastname" value= {{ last_name }}>
+          <br>
+          Program:<br>
+          <input type="text" name="program" value= {{ program }}>
+          <br>
+          Cohort:<br>
+          <input type="text" name="cohort" value= {{ cohort }}>
+          <br>
+          Location:<br>
+          <input type="text" name="location" value= {{ location }}>
+          <br>
+          Email:<br>
+          <input type="text" name="email" value= {{ email }}>
+          <br>
+          <br>
+          <input type="submit" value="Edit">
+        {% endif %}
+
+    </form>
+
+
+{% endblock %}

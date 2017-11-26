@@ -37,8 +37,10 @@ urlpatterns = [
 
     # URLS for Global Admin View
     url(r'^global_home$', views.location_select, name='location_select'),
-    url(r'^global_admin_profile$', views.GlobalAdminProfileView.as_view()),
 
+    #Profile editing URLS
+    url(r'^view_profile$', views.view_profile, name='view_profile'),
+    url(r'^edit_profile$', views.edit_profile, name='edit_profile'),
 
     # URLS for Local Admin View
     url(r'^local_home$', views.LocalAdminHomeView.as_view()),

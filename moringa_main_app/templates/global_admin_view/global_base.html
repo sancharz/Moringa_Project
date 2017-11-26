@@ -4,25 +4,33 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Global Admin</title>
+        <title> Global Admin </title>
 
-
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
 
     <body>
         <div class="topnav" id="myTopnav">
           <a href="/global_home">Home</a>
           <a href="/global_admin_profile">Profile</a>
+          <a href="/login">Log Out</a>
         </div>
+
+        <div id="logo">
+            <img src="{% static "global_admin/images/logo.png" %}"/>
+        </div>
+{##}
+
+
 
 
     {% block content %}
     {% endblock %}
 
-
-        <script src="{% static "global_admin/js/global_home.js" %}"></script>
-
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
+
 </html>
+

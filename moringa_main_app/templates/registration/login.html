@@ -1,0 +1,18 @@
+﻿{% extends "registration/base.html" %}
+
+{% load staticfiles %}
+
+{% block main_content %}
+    <div class="container">
+         <form class="form-signin" method="post" action="/login/">
+             {% csrf_token %}
+                <img class="displayed" src="{% static "global_admin/images/logo.png" %}" alt="Moringa Logo" align="middle">
+                <label for="inputEmail" class="sr-only">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>        
+        </form>
+    </div> <!-- container -->
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+{% endblock %}

@@ -1,0 +1,3 @@
+{
+    "python.pythonPath": "${workspaceRoot}/moringa_env/bin/python"
+}

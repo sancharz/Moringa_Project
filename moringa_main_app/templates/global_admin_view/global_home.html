@@ -3,70 +3,33 @@
 {% load staticfiles %}
 
 {% block content %}
-    <link href= "{% static "global_admin/css/location_view.css" %}" rel="stylesheet">
+    <h1>Welcome, Administrator</h1>
 
-    <div id="docText">
-        <div>
-            <img src="{% static "global_admin/images/logo.png" %}"/>
-        </div>
+
+    <div id="location_menu">
+        <h4>Select Location</h4>
+        <form action="/global_home" method="post">
+            {% csrf_token %}
+            <select name="location" onchange="this.form.submit()">
+                <option disabled selected value>Location</option>
+                <option value="nairobi">Nairobi</option>
+                <option value="mumbai">Mumbai</option>
+            </select>
+
+        </form>
     </div>
 
-    <div id="selection">
-        <h3>Select Location:</h3>
-    </div>
 
-        <div id="slidingContent">
-        <div id="contentContainer">
+    {# What do I need to be displaying?  #}
 
-            <div id="wrapper">
+    {% if students %}
+        {% for student in students %}
+            {{ student.cohort }}
+        {% endfor %}
+    {% endif %}
 
-                 <a href="/kenya_and_east_africa">
-                    <div id="itemOne" class="content">
-                         <div id="locationText">
-        {#                        <img src="{% static "global_admin/images/kenya.png" %}" style="padding-top: 25px; text-align: center; width: 250px; height:300px" />#}
-                             <h2>KENYA & EAST AFRICA</h2>
 
-                         </div>
-                    </div>
-                 </a>
-
-                 <a href="/nigeria">
-                    <div id="itemTwo" class="content">
-                        <div id="locationText">
-                            <h2>NIGERIA</h2>
-                        </div>
-                    </div>
-                 <a/>
-
-                 <a href="/ghana">
-                    <div id="itemThree" class="content">
-                        <div id="locationText">
-                            <h2>GHANA</h2>
-                        </div>
-
-                    </div>
-                 </a>
-
-                 <a href="/international_and_other">
-                    <div id="itemFour" class="content">
-                        <div id="locationText">
-                            <h2>INTERNATIONAL & OTHER</h2>
-                        </div>
-                    </div>
-                 </a>
-
-            </div>
-
-        </div>
-
-        <div id="navLinks">
-            <ul>
-                <li class="itemLinks" data-pos="0px"></li>
-                <li class="itemLinks" data-pos="-550px"></li>
-                <li class="itemLinks" data-pos="-1100px"></li>
-                <li class="itemLinks" data-pos="-1650px"></li>
-            </ul>
-        </div>
-    </div>
 
 {% endblock %}
+
+

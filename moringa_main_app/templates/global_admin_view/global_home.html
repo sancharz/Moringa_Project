@@ -4,7 +4,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Global Admin</title>
+        <title> Adminstrator </title>
 
 
         <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
@@ -13,18 +13,19 @@
     <body>
         <div class="topnav" id="myTopnav">
           <a href="/location_view">Home</a>
-          <a href="/admin_profile">Profile</a>
+          <a href="/view_profile">Profile</a>
+          <!-- redirect to login page when a user logs out - sancharz -->
+          <a href="/login">Log Out</a>
+
         </div>
+        <!-- local admin view profile extends this so dont specify type of admin - sancharz -->
+        <h1> Welcome Adminstrator </h1>
 
 
     {% block content %}
 
 
     {% endblock %}
-
-
-
-
 
         <script src="{% static "global_admin/js/global_home.js" %}"></script>
 

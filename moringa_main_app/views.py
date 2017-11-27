@@ -98,6 +98,13 @@ def login(request):
 def check_in(request):
     message = "" # initialize a variable to hold a message based on student status
     status = "" # initialize a variable to hold a student status
+    tardy = True
+    absent = True
+
+    # check if student has already submitted attendance today
+    rows = Attendance.objects.filter(date__date=datetime.now().date()) 
+    if len(rows) > 0:
+        return redirect('/view_record/')
     tardy = False
     absent = False
 
@@ -105,29 +112,29 @@ def check_in(request):
     ip = get_ip(request)
     if not ip: # if IP address not retrieved (error check)
         print("we don't have an IP address for user")
-    #print("THIS IS THE IP ADDRESS FOLKS", ip) #debugging
     
     if ip == MORINGA_IP_ADDRESS: # on campus
         # check time
         if datetime.now().time() <= datetime.strptime('080000', '%H%M%S').time(): # on time
+            tardy = False
+            absent = False
             status = "On Time"
             message = "You are on time. Please submit your attendance."
-            if request.method == 'GET': # render on time page
-                return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+            
         else: # tardy
             status = "Tardy"
-            tardy = True
+            absent = False
             message = "You are tardy. Please leave an excuse for your tardiness."
-            if request.method == 'GET': # render tardy page
-                return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+    
     else: # not on campus
         status = "Not on Campus"
-        absent = True
+        tardy = False
         message = "You are not currently on campus. If applicable, please leave an excuse for your absence."
-        if request.method == 'GET': # render absent page
-            return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
-    
-    if request.method == 'POST':
+        
+    if request.method == 'GET': # render page
+        return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
+
+    if request.method == 'POST': # add to database
         excuse = ""
         if status != "On Time": # should be an excuse
             if not request.POST.get('excuse'): # missing excuse
@@ -138,57 +145,8 @@ def check_in(request):
         query = Attendance(tardy=tardy, absent=absent, excuse=excuse, user_id=request.user.id) 
         query.save() # save into attendance database
 
-    # redirect to 'congrats, you've submitted' page or w/e
-    return render(request, 'student_view/check_in.html', {'student_status':status, 'message':message})
-        
-
-# # check in for students
-# @login_required
-# def check_in(request):
-#     if request.method == 'GET':
-#         # make time_status && location_status 
-#         # time_status == 1 (on time); == 0 (late)
-#         # location_status == 1 (on campus); == 0 (not on campus)
-#         # check location
-#         message = "" # initialize a variable to hold a message based on student status
-#         status = "" # initialize a variable to hold a student status
-
-#         # get user's IP address --> https://github.com/un33k/django-ipware
-#         ip = get_ip(request)
-#         print("THIS IS THE IP ADDRESS FOLKS", end = "") #debugging
-#         print(ip) # debugging
-#         if not ip: # if IP address not retrieved (error check)
-#             print("we don't have an IP address for user")
-        
-#         if ip == MORINGA_IP_ADDRESS: # on campus
-#             location_status = 1
-#         else: # not on campus
-#             location_status = 0
-        
-#         if location_status == 0: # if not on campus, render absent page
-#             status = "Not on Campus"
-#             message = "You are not currently on campus. If applicable, please leave an excuse for your absence."
-#             return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
-#         else: # only check time if student is on campus
-#             # check time
-#             if datetime.now().time() <= datetime.strptime('080000', '%H%M%S').time(): # on time
-#                 time_status = 1
-#                 status = "On Time"
-#                 message = "you are on time. please submit your attendance!"
-#                 return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
-#             else: # tardy
-#                 time_status = 0
-#                 status = "Tardy"
-#                 message = "you are tardy, please submit your attendance and leave an excuse for your tardiness."
-#                 return render(request, 'student_view/check_in.html', {'student_status':status, 'message': message})
-#     if request.method == 'POST':
-#         # TO DO -- write into databases
-#         if not request.POST.get('excuse'):
-#             return render(request, 'student_view/check_in.html', {'student_status':status, 'error':True})
-#         query = Attendance(userId= request.user, tardy = True if status == "tardy" else False, absent = True if status == "absent" else False, excuse=request.POST.get('excuse'))
-#         query.save()
-#     # redirect to 'congrats, you've submitted' page
-#     return render(request, 'student_view/check_in.html', {'student_status':status})
+    # redirect to view records
+    return redirect('/view_record/')
 
 #viewing a student profile is read only so there is no POST - Sela and Emily Lu
 #student cannot edit their profile information
@@ -200,15 +158,21 @@ def student_info(request):
     return render(request, 'student_view/student_user_info.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': student[0].program, 'cohort': student[0].cohort, 'location':student[0].location, 'email':cur_user[0].email})
 
 
-#the function below is not yet complete - NOT DONE
-#SELA AND  EMILY LU
 #viewing student records for everyone
 @login_required
-def view_records(request):
-    if request.method == GET:
-        #determine which user is trying to view records
-        user = request.user.username
-        return render(request, 'registration/login.html', None)
+def view_record(request):
+    #determine which user is trying to view records
+    user = request.user.username
+    rows = Attendance.objects.all()
+    status = []
+    for row in rows:
+        if row.tardy:
+            status.append('Tardy')
+        elif row.absent:
+            status.append('Absent')
+        else:
+            status.append('On Time')
+    return render(request, 'student_view/view_record.html', {'list': zip(rows, status)})
 
 #this function is not yet done - NOT DONE
 #SELA and EMILY LU
@@ -224,10 +188,72 @@ def view_profile(request):
     #only two of these query sets will not be empty
     #user can't be local_a and global_a at the same time
     if local_a:
-        return render(request, 'global_admin_view/admin_profile.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': local_a[0].program, 'cohort': "", 'location': local_a[0].location, 'email':cur_user[0].email})
+        return render(request, 'global_admin_view/admin_profile.html', {
+            'first_name': cur_user[0].first_name,
+            'last_name': cur_user[0].last_name,
+            'program': local_a[0].program,
+            'location': local_a[0].location,
+            'email': cur_user[0].username,
+            'admin_type': "local"
+        })
     if global_a:
         #note that global admin does not have program, cohort or location
-        return render(request, 'global_admin_view/admin_profile.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': "haibo", 'cohort': "", 'location': "", 'email': cur_user[0].email})
+        return render(request, 'global_admin_view/admin_profile.html', {
+            'first_name': cur_user[0].first_name,
+            'last_name': cur_user[0].last_name,
+            'email': cur_user[0].username,
+            'admin_type': "global"
+
+        })
+
+
+
+@login_required
+def edit_profile(request):
+    # task - also have get or post
+    # query the database
+    local_a = LocalAdmin.objects.filter(user=request.user)
+    global_a = GlobalAdmin.objects.filter(user=request.user)
+    cur_user = User.objects.filter(username=request.user)
+    # only two of these query sets will not be empty
+    # user can't be local_a and global_a at the same time
+    if local_a:
+        if request.method == 'GET':
+            return render(request, 'global_admin_view/edit_profile.html', {
+                'first_name': cur_user[0].first_name,
+                'last_name': cur_user[0].last_name,
+                'program': local_a[0].program,
+                'location': local_a[0].location,
+                'email': cur_user[0].username,
+                'admin_type': "local"
+            })
+        if request.method == 'POST':
+            cur_user.update(first_name = request.POST.get("firstname"))
+            cur_user.update(last_name = request.POST.get("lastname"))
+            local_a.update(program = request.POST.get("program"))
+            local_a.update(location = request.POST.get("location"))
+            cur_user.update(email = request.POST.get("email"))
+
+            return redirect('/view_profile')
+
+
+    if global_a:
+        if request.method == 'GET':
+            # note that global admin does not have program, cohort or location
+            return render(request, 'global_admin_view/edit_profile.html', {
+                'first_name': cur_user[0].first_name,
+                'last_name': cur_user[0].last_name,
+                'email': cur_user[0].username,
+                'admin_type': "global"
+            })
+        if request.method == 'POST':
+            cur_user.update(first_name = request.POST.get("firstname"))
+            cur_user.update(last_name = request.POST.get("lastname"))
+            global_a.update(program = request.POST.get("program"))
+            global_a.update(location = request.POST.get("location"))
+            cur_user.update(email = request.POST.get("email"))
+
+            return redirect('/view_profile')
 
 
     

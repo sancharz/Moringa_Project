@@ -7,10 +7,39 @@
 <!-- <link href="{% static "global_admin/css/admin_profile.css" %}" rel="stylesheet">
  -->
  <h1> Adminstrator Profile Information</h1>
-    <br>
-    <p><b>First Name:</b> {{ first_name }}</p>
-    <p><b>Last Name:</b> {{ last_name }}</p>
-    <br>
-    <p><b>Email:</b> {{ email }}</p>
-    <br>
+    {% if admin_type == "local" %}
+        <ul>
+            <li>
+                First Name: {{ first_name }}
+            </li>
+            <li>
+                Last Name: {{ last_name }}
+            </li>
+            <li>
+                Program: {{ program }}
+            </li>
+            <li>
+                Location: {{ location }}
+            </li>
+            <li>
+                Email: {{ email }}
+            </li>
+        </ul>
+    {% endif %}
+
+    {% if admin_type == "global" %}
+        <ul>
+            <li>
+                First Name: {{ first_name }}
+            </li>
+            <li>
+                Last Name: {{ last_name }}
+            </li>
+            <li>
+                Email: {{ email }}
+            </li>
+        </ul>
+    {% endif %}
+
+    <a href="/edit_profile"><button type="button" class="btn btn-primary">Edit Profile</button></a>
 {% endblock %}

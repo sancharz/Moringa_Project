@@ -16,7 +16,7 @@ urlpatterns = [
 
     #STUDENT URL Mappings 
     url(r'^check_in/$', views.check_in, name='check_in'),
-    url(r'^view_record/$', views.ViewRecordView.as_view()),
+    url(r'^view_record/$', views.view_record, name='view_record'),
     url(r'^student_info/$', views.student_info, name='student_user_info'),
 
     #LOCAL ADMIN URL Mappings 
@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^global_home/$', views.GlobalHome.as_view()),
     url(r'^location_view$', views.LocationView.as_view()),
     url(r'^admin_profile$', views.AdminProfileView.as_view()),
+    url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
 
 
 #hard coded Url mappings no longer necessary - sancharz

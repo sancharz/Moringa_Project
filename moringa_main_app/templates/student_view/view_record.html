@@ -11,20 +11,13 @@
             <th>Status</th>
             <th>Reason</th>
         </tr>
-        <!-- dummy hard coded sample -->
-        <tr>
-            <td>10/18/17</td>
-            <td>8:50 AM</td>
-            <td>Late</td>
-            <td>(reason){{ reason }}</td>
-        </tr>
         <!-- for number of records -->
-        {% for day in days %}
+        {% for row, status in list %}
             <tr>
-                <td>10/18/17</td>
-                <td>8:50 AM</td>
-                <td>Late</td>
-                <td>(reason){{ reason }}</td>
+                <td>{{ row.date | date:"d M Y" }}</td>
+                <td>{{ row.date | time:"g:i A" }}</td>
+                <td>{{ status }}</td>
+                <td>{{ row.excuse }}</td>
             </tr>
         {% endfor %}
     </table>

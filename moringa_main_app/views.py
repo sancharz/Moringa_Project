@@ -102,7 +102,8 @@ def check_in(request):
     absent = True
 
     # check if student has already submitted attendance today
-    rows = Attendance.objects.filter(date__date=datetime.now().date()) 
+    #rows = Attendance.objects.filter(date__date=datetime.now().date()) 
+    rows = Attendance.objects.filter(date__date=datetime.now().date(), user_id=request.user.id) 
     if len(rows) > 0:
         return redirect('/view_record/')
     tardy = False
@@ -163,7 +164,8 @@ def student_info(request):
 def view_record(request):
     #determine which user is trying to view records
     user = request.user.username
-    rows = Attendance.objects.all()
+    #rows = Attendance.objects.all()
+    rows = Attendance.objects.filter(user_id=request.user.id)
     status = []
     for row in rows:
         if row.tardy:

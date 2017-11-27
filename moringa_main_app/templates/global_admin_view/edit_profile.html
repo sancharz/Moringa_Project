@@ -1,0 +1,47 @@
+{% extends "global_admin_view/global_home.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+ <h1> Edit Administrator Profile Information</h1>
+    <form action="/edit_profile/" method="post">
+        {% csrf_token %}
+
+        {% if admin_type == "local" %}
+          First name:<br>
+          <input type="text" name="firstname" value= {{ first_name }} >
+          <br>
+          Last name:<br>
+          <input type="text" name="lastname" value= {{ last_name }}>
+          <br>
+          Program:<br>
+          <input type="text" name="program" value= {{ program }}>
+          <br>
+          Location:<br>
+          <input type="text" name="location" value= {{ location }}>
+          <br>
+          Email:<br>
+          <input type="text" name="email" value= {{ email }}>
+          <br>
+          <br>
+        {% endif %}
+
+        {% if admin_type == "global" %}
+          First name:<br>
+          <input type="text" name="firstname" value= {{ first_name }} >
+          <br>
+          Last name:<br>
+          <input type="text" name="lastname" value= {{ last_name }}>
+          <br>
+          Email:<br>
+          <input type="text" name="email" value= {{ email }}>
+          <br>
+          <br>
+        {% endif %}
+
+        <input type="submit" value="Edit">
+    </form>
+
+
+{% endblock %}

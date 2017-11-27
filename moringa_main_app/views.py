@@ -13,6 +13,8 @@ from moringa_main_app.models import Students
 from moringa_main_app.models import GlobalAdmin
 from moringa_main_app.models import LocalAdmin
 
+from django.views.decorators.csrf import csrf_exempt
+
 # for getting time
 from datetime import datetime
 # for getting ip address
@@ -224,13 +226,153 @@ def view_profile(request):
     #only two of these query sets will not be empty
     #user can't be local_a and global_a at the same time
     if local_a:
-        return render(request, 'global_admin_view/admin_profile.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': local_a[0].program, 'cohort': "", 'location': local_a[0].location, 'email':cur_user[0].email})
+        return render(request, 'global_admin_view/admin_profile.html', {
+            'first_name': cur_user[0].first_name,
+            'last_name': cur_user[0].last_name,
+            'program': local_a[0].program,
+            'location': local_a[0].location,
+            'email': cur_user[0].username,
+            'admin_type': "local"
+        })
     if global_a:
         #note that global admin does not have program, cohort or location
-        return render(request, 'global_admin_view/admin_profile.html', {'first_name': cur_user[0].first_name, 'last_name': cur_user[0].last_name, 'program': "haibo", 'cohort': "", 'location': "", 'email': cur_user[0].email})
+        return render(request, 'global_admin_view/admin_profile.html', {
+            'first_name': cur_user[0].first_name,
+            'last_name': cur_user[0].last_name,
+            'email': cur_user[0].username,
+            'admin_type': "global"
+
+        })
 
 
-    
+
+@login_required
+def edit_profile(request):
+    # task - also have get or post
+    # query the database
+    local_a = LocalAdmin.objects.filter(user=request.user)
+    global_a = GlobalAdmin.objects.filter(user=request.user)
+    cur_user = User.objects.filter(username=request.user)
+    # only two of these query sets will not be empty
+    # user can't be local_a and global_a at the same time
+    if local_a:
+        if request.method == 'GET':
+            return render(request, 'global_admin_view/edit_profile.html', {
+                'first_name': cur_user[0].first_name,
+                'last_name': cur_user[0].last_name,
+                'program': local_a[0].program,
+                'location': local_a[0].location,
+                'email': cur_user[0].username,
+                'admin_type': "local"
+            })
+        if request.method == 'POST':
+            cur_user.update(first_name = request.POST.get("firstname"))
+            cur_user.update(last_name = request.POST.get("lastname"))
+            local_a.update(program = request.POST.get("program"))
+            local_a.update(location = request.POST.get("location"))
+            cur_user.update(email = request.POST.get("email"))
+
+            return redirect('/view_profile')
+
+
+    if global_a:
+        if request.method == 'GET':
+            # note that global admin does not have program, cohort or location
+            return render(request, 'global_admin_view/edit_profile.html', {
+                'first_name': cur_user[0].first_name,
+                'last_name': cur_user[0].last_name,
+                'email': cur_user[0].username,
+                'admin_type': "global"
+            })
+        if request.method == 'POST':
+            cur_user.update(first_name = request.POST.get("firstname"))
+            cur_user.update(last_name = request.POST.get("lastname"))
+            global_a.update(program = request.POST.get("program"))
+            global_a.update(location = request.POST.get("location"))
+            cur_user.update(email = request.POST.get("email"))
+
+            return redirect('/view_profile')
+
+
+# VIEWS FOR GLOBAL ADMIN
+@login_required
+def location_view(request):
+    if request.method == 'GET':
+        return render(request, 'global_admin_view/location_view.html')
+
+    if request.method == 'POST':
+        if request.POST.get("user_type") is not None:
+            # If the user type is local admin, query database for data to display
+            if request.POST.get("user_type") == "Local Admins":
+                location = request.POST.get("location").lower()
+
+
+                local_admins = []
+
+                for admin in LocalAdmin.objects.filter(location=location):
+                    local_admin = {}
+                    local_admin["email"] = admin.user
+                    for user in User.objects.select_related("localadmin").filter(username=admin.user):
+                        local_admin["first_name"] = user.first_name
+                        local_admin["last_name"] = user.last_name
+                    local_admins.append(local_admin)
+
+
+                return render(request, 'global_admin_view/view_information.html', {
+                    "location": request.POST.get("location"),
+                    "user_type": request.POST.get("user_type"),
+                    "local_admins": local_admins,
+
+                })
+           # If user type is student and the info type has been chosen, query database for data to display
+            if request.POST.get("info") is not None:
+                    # TODO: Query db and send data to new view to show info?
+                    location = request.POST.get("location").lower()
+
+                    students = []
+
+                    if request.POST.get("info") == "Profile":
+                        for student in Students.objects.filter(location=location):
+                            s = {}
+                            s["program"] = student.program
+                            s["cohort"] = student.cohort
+                            s["email"] = student.user
+                            for user in User.objects.select_related("students").filter(username=student.user):
+                                s["first_name"] = user.first_name
+                                s["last_name"] = user.last_name
+                            students.append(s)
+
+                    if request.POST.get("info") == "Attendance":
+                        for student in Students.objects.filter(location=location):
+                            s = {}
+
+                            for user in User.objects.select_related("students").filter(username=student.user):
+                                s["first_name"] = user.first_name
+                                s["last_name"] = user.last_name
+                            for entry in Attendance.objects.select_related("user").filter(user=student.user):
+                                s["date"] = entry.date
+                                s["tardy"] = entry.tardy
+                                s["absent"] = entry.absent
+                                s["excuse"] = entry.excuse
+
+                            students.append(s)
+
+
+                    return render(request, 'global_admin_view/view_information.html', {
+                        "location": request.POST.get("location"),
+                        "user_type": request.POST.get("user_type"),
+                        "info": request.POST.get("info"),
+                        "students": students
+                    })
+            # If user type is student and info has not been chosen yet, render template passing in location and user_type
+            return render(request, 'global_admin_view/location_view.html', {
+                "location": request.POST.get("location"),
+                "user_type": request.POST.get("user_type")
+            })
+        # If location has been selected but no user_type is chosen, render the template, passing in location
+        return render(request, 'global_admin_view/location_view.html', {"location": request.POST.get("location")})
+
+
 
 
 

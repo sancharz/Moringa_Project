@@ -5,68 +5,82 @@
 {% block content %}
     <link href= "{% static "global_admin/css/location_view.css" %}" rel="stylesheet">
 
-    <div id="docText">
-        <div>
-            <img src="{% static "global_admin/images/logo.png" %}"/>
-        </div>
+    <div id="title">
+        <h1> Welcome Administrator </h1>
     </div>
 
-    <div id="selection">
-        <h3>Select Location:</h3>
-    </div>
+        {% if not location %}
+            <h2>Select Location</h2>
+            <br>
+            <form action="/location_view" method="post">
+                {% csrf_token %}
+                <button type="submit" name="location" value="Nairobi" class="btn btn-info btn-block">Nairobi</button>
+            </form>
 
-        <div id="slidingContent">
-        <div id="contentContainer">
+            <br><br>
 
-            <div id="wrapper">
+            <form action="/location_view" method="post">
+                {% csrf_token %}
+                <button type="submit" name="location" value="Mumbai" class="btn btn-info btn-block">Mumbai</button>
+            </form>
+        {% endif %}
 
-                 <a href="/kenya_and_east_africa">
-                    <div id="itemOne" class="content">
-                         <div id="locationText">
-        {#                        <img src="{% static "global_admin/images/kenya.png" %}" style="padding-top: 25px; text-align: center; width: 250px; height:300px" />#}
-                             <h2>KENYA & EAST AFRICA</h2>
+        {% if location %}
+            {% if not user_type %}
+                <h2>Select User</h2>
+                <br>
+                <form action="/location_view" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="location" value={{location}}>
+                    <input type="hidden" name="user_type" value="Local Admins">
+                    <button type="submit" class="btn btn-info btn-block">Local Admin</button>
+                </form>
 
-                         </div>
-                    </div>
-                 </a>
+                <br><br>
 
-                 <a href="/nigeria">
-                    <div id="itemTwo" class="content">
-                        <div id="locationText">
-                            <h2>NIGERIA</h2>
-                        </div>
-                    </div>
-                 <a/>
+                <form action="/location_view" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="location" value={{location}}>
+                    <input type="hidden" name="user_type" value="Students">
+                    <button type="submit" class="btn btn-info btn-block">Student</button>
+                </form>
+            {% else %}
 
-                 <a href="/ghana">
-                    <div id="itemThree" class="content">
-                        <div id="locationText">
-                            <h2>GHANA</h2>
-                        </div>
+            {% endif %}
+        {% endif %}
 
-                    </div>
-                 </a>
+        {% if user_type == "Students" and not info %}
+            <h2>Select Information</h2>
+            <br>
+            <form action="/location_view" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{location}}>
+                <input type="hidden" name="user_type" value="Students">
+                <input type="hidden" name="info" value="Profile">
+                <button type="submit" class="btn btn-info btn-block">Profile</button>
+            </form>
 
-                 <a href="/international_and_other">
-                    <div id="itemFour" class="content">
-                        <div id="locationText">
-                            <h2>INTERNATIONAL & OTHER</h2>
-                        </div>
-                    </div>
-                 </a>
+            <br><br>
 
-            </div>
+            <form action="/location_view" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{location}}>
+                <input type="hidden" name="user_type" value="Students">
+                <input type="hidden" name="info" value="Attendance">
+                <button type="submit" class="btn btn-info btn-block">Attendance</button>
+            </form>
+        {% else %}
+        {% endif %}
 
-        </div>
 
-        <div id="navLinks">
-            <ul>
-                <li class="itemLinks" data-pos="0px"></li>
-                <li class="itemLinks" data-pos="-550px"></li>
-                <li class="itemLinks" data-pos="-1100px"></li>
-                <li class="itemLinks" data-pos="-1650px"></li>
-            </ul>
-        </div>
-    </div>
+
+        {% if info %}
+            Location is : {{location}} <br>
+            User type is: {{user_type}} <br>
+            info type is: {{info}}
+
+        {% endif %}
+
+
 
 {% endblock %}

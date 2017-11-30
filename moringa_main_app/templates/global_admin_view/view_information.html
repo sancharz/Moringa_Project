@@ -1,0 +1,114 @@
+{% extends "global_admin_view/global_home.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <link href= "{% static "global_admin/css/view_information.css" %}" rel="stylesheet">
+
+    <div id="title">
+        {% if user_type == "Local Admins" %}
+            <h1>Information for {{user_type}} of {{location}}</h1>
+        {% endif %}
+
+        {% if user_type == "Students" %}
+            <h1>{{info}} Information for {{user_type}} of {{location}}<h1>
+        {% endif %}
+
+    </div>
+
+    {% if user_type == "Local Admins" %}
+        <div class="container">
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for admin in local_admins %}
+                    <tr>
+                        <td>{{admin.first_name}}</td>
+                        <td>{{admin.last_name}}</td>
+                        <td>{{admin.email}}</td>
+                    </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+          </table>
+        </div>
+
+    {% endif %}
+
+    {% if user_type == "Students" and info == "Profile" %}
+        <div class="container">
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Program</th>
+                <th>Cohort</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{student.first_name}}</td>
+                        <td>{{student.last_name}}</td>
+                        <td>{{student.email}}</td>
+                        <td>{{student.program}}</td>
+                        <td>{{student.cohort}}</td>
+                    </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+          </table>
+        </div>
+    {% endif %}
+
+    {% if user_type == "Students" and info == "Attendance" %}
+        <div class="container">
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date</th>
+                <th>Tardy</th>
+                <th>Absent</th>
+                <th>Excuse</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{student.first_name}}</td>
+                        <td>{{student.last_name}}</td>
+                        <td>{{student.date}}</td>
+                        <td>{{student.tardy}}</td>
+                        <td>{{student.absent}}</td>
+                        <td>{{student.excuse}}</td>
+                    </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+          </table>
+        </div>
+    {% endif %}
+
+
+
+
+{% endblock %}

@@ -237,7 +237,7 @@ def edit_profile(request):
 
             return redirect('/view_profile')
 
-
+    #global admins are not associated with a location or program
     if global_a:
         if request.method == 'GET':
             # note that global admin does not have program, cohort or location
@@ -250,8 +250,6 @@ def edit_profile(request):
         if request.method == 'POST':
             cur_user.update(first_name = request.POST.get("firstname"))
             cur_user.update(last_name = request.POST.get("lastname"))
-            global_a.update(program = request.POST.get("program"))
-            global_a.update(location = request.POST.get("location"))
             cur_user.update(email = request.POST.get("email"))
 
             return redirect('/view_profile')

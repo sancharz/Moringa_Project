@@ -22,11 +22,11 @@ urlpatterns = [
     #LOCAL ADMIN URL Mappings 
     url(r'^view_profile/$', views.view_profile, name='admin_profile'),
     url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
-    url(r'^local_home/$', views.LocalHome.as_view()),
+    url(r'^local_admin/$', views.local_admin, name='local_admin'),
 
     #GLOBAL ADMIN URL Mappings 
-    url(r'^global_home/$', views.GlobalHome.as_view()),
-    url(r'^location_view$', views.location_view, name="location_view"),
+    url(r'^global_admin/$', views.global_admin, name='global_admin'),
+    #url(r'^location_view$', views.location_view, name="location_view"),
     url(r'^admin_profile$', views.AdminProfileView.as_view()),
     
 

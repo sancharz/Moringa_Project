@@ -81,10 +81,12 @@ def login(request):
                 return redirect('/check_in/')
             if query_la:
                 #user is a la
-                return redirect('/local_home/')
+                #return render(request, '/local_admin/', {'location': query_la[0].location})
+                return redirect('/local_admin')
             if query_ga:
                 #user is a ga
-                return redirect('/global_home/')
+                #TODO: let sancharz know of this change
+                return redirect('/global_admin/')
 
             #commented this code out to test if alternative above works - sancharz to Romil
             # if hasattr(user, 'localadmin') is not None:
@@ -262,9 +264,9 @@ def edit_profile(request):
 
 # VIEWS FOR GLOBAL ADMIN
 @login_required
-def location_view(request):
+def global_admin(request):
     if request.method == 'GET':
-        return render(request, 'global_admin_view/location_view.html')
+        return render(request, 'global_admin_view/global_home.html')
 
     if request.method == 'POST':
         if request.POST.get("user_type") is not None:
@@ -290,7 +292,7 @@ def location_view(request):
                     "local_admins": local_admins,
 
                 })
-           # If user type is student and the info type has been chosen, query database for data to display
+            # If user type is student and the info type has been chosen, query database for data to display
             if request.POST.get("info") is not None:
                     # TODO: Query db and send data to new view to show info?
                     location = request.POST.get("location").lower()
@@ -317,9 +319,18 @@ def location_view(request):
                                 s["last_name"] = user.last_name
                             for entry in Attendance.objects.select_related("user").filter(user=student.user):
                                 s["date"] = entry.date
-                                s["tardy"] = entry.tardy
-                                s["absent"] = entry.absent
-                                s["excuse"] = entry.excuse
+                                if entry.tardy:
+                                    s["status"] = "Tardy"
+                                elif entry.absent:
+                                    s["status"] = "Absent"
+                                else:
+                                    s["status"] = "On Time"
+                                # s["tardy"] = entry.tardy
+                                # s["absent"] = entry.absent
+                                if not entry.excuse:
+                                    s["excuse"] = "---------"
+                                else:
+                                    s["excuse"] = entry.excuse
 
                             students.append(s)
 
@@ -331,13 +342,64 @@ def location_view(request):
                         "students": students
                     })
             # If user type is student and info has not been chosen yet, render template passing in location and user_type
-            return render(request, 'global_admin_view/location_view.html', {
+            return render(request, 'global_admin_view/global_home.html', {
                 "location": request.POST.get("location"),
                 "user_type": request.POST.get("user_type")
             })
         # If location has been selected but no user_type is chosen, render the template, passing in location
-        return render(request, 'global_admin_view/location_view.html', {"location": request.POST.get("location")})
-    
+        return render(request, 'global_admin_view/global_home.html', {"location": request.POST.get("location")})
+
+# VIEWS FOR LOCAL ADMIN
+@login_required
+def local_admin(request):
+    if request.method == 'GET':
+        return render(request, 'local_admin/local_home.html')
+
+    if request.method == 'POST':
+            location = LocalAdmin.objects.filter(user = request.user)[0].location
+            students = []
+
+            if request.POST.get("info") == "Profile":
+                for student in Students.objects.filter(location=location):
+                    s = {}
+                    s["program"] = student.program
+                    s["cohort"] = student.cohort
+                    s["email"] = student.user
+                    for user in User.objects.select_related("students").filter(username=student.user):
+                        s["first_name"] = user.first_name
+                        s["last_name"] = user.last_name
+                    students.append(s)
+
+            if request.POST.get("info") == "Attendance":
+                for student in Students.objects.filter(location=location):
+                    s = {}
+
+                    for user in User.objects.select_related("students").filter(username=student.user):
+                        s["first_name"] = user.first_name
+                        s["last_name"] = user.last_name
+                    for entry in Attendance.objects.select_related("user").filter(user=student.user):
+                        s["date"] = entry.date
+                        if entry.tardy:
+                            s["status"] = "Tardy"
+                        elif entry.absent:
+                            s["status"] = "Absent"
+                        else:
+                            s["status"] = "On Time"
+                        if not entry.excuse:
+                            s["excuse"] = "---------"
+                        else:
+                            s["excuse"] = entry.excuse
+
+                    students.append(s)
+
+            return render(request, 'local_admin/view_information.html', {
+                "location": location,
+                "info": request.POST.get("info"),
+                "students": students
+            })
+
+
+
 
 # VIEWS FOR STUDENT_VIEW
 class HomePageView(TemplateView):
@@ -357,10 +419,10 @@ class StudentInfoView(TemplateView):
 
 #VIEWS FOR GLOBAL ADMIN
 class GlobalHome (TemplateView):
-    template_name = "global_admin_view/global_home.html"
+    template_name = "global_admin_view/global_base.html"
 
 class LocationView (TemplateView):
-    template_name = "global_admin_view/location_view.html"
+    template_name = "global_admin_view/global_home.html"
 
 class AdminProfileView (TemplateView):
     template_name = "global_admin_view/admin_profile.html"
@@ -368,7 +430,7 @@ class AdminProfileView (TemplateView):
 
 #Views for Local Admin
 class LocalHome (TemplateView):
-    template_name = "local_admin/localadmin_home.html"
+    template_name = "local_admin/local_base.html"
 
 
 #commented out the brute-force coded classes as we will not be using them - sancharz

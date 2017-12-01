@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+
+    <head>
+        <meta charset="UTF-8">
+        <title> Adminstrator </title>
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
+
+    </head>
+
+    <body>
+        <div class="topnav" id="myTopnav">
+          <a href="/global_admin">Home</a>
+          <a href="/view_profile">Profile</a>
+          <!-- redirect to login page when a user logs out - sancharz -->
+          <a href="/login">Log Out</a>
+
+        </div>
+        <!-- local admin view profile extends this so dont specify type of admin - sancharz -->
+{#        <h1> Welcome Adminstrator </h1>#}
+
+
+    {% block content %}
+
+
+    {% endblock %}
+
+        <script src="{% static "global_admin/js/global_home.js" %}"></script>
+
+    </body>
+</html>

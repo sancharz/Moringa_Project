@@ -1,35 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "global_admin_view/global_base.html" %}
+
 {% load staticfiles %}
 
-    <head>
-        <meta charset="UTF-8">
-        <title> Adminstrator </title>
+{% block content %}
+    <link href= "{% static "global_admin/css/global_admin/.css" %}" rel="stylesheet">
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <div id="title">
+        <h1> Welcome Administrator </h1>
+    </div>
 
-        <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
+        {% if not location %}
+            <h2>Select Location</h2>
+            <br>
+            <form action="/global_admin/" method="post">
+                {% csrf_token %}
+                <button type="submit" name="location" value="Nairobi" class="btn btn-info btn-block">Nairobi</button>
+            </form>
 
-    </head>
+            <br><br>
 
-    <body>
-        <div class="topnav" id="myTopnav">
-          <a href="/location_view">Home</a>
-          <a href="/view_profile">Profile</a>
-          <!-- redirect to login page when a user logs out - sancharz -->
-          <a href="/login">Log Out</a>
+            <form action="/global_admin/" method="post">
+                {% csrf_token %}
+                <button type="submit" name="location" value = "Mumbai" class="btn btn-info btn-block">Mumbai</button>
+            </form>
+        {% endif %}
 
-        </div>
-        <!-- local admin view profile extends this so dont specify type of admin - sancharz -->
-        <h1> Welcome Adminstrator </h1>
+        {% if location %}
+            {% if not user_type %}
+                <h2>Select User</h2>
+                <br>
+                <form action="/global_admin/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="location" value={{location}}>
+                    <input type="hidden" name="user_type" value="Local Admins">
+                    <button type="submit" class="btn btn-info btn-block">Local Admin</button>
+                </form>
+
+                <br><br>
+
+                <form action="/global_admin/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="location" value={{location}}>
+                    <input type="hidden" name="user_type" value="Students">
+                    <button type="submit" class="btn btn-info btn-block">Student</button>
+                </form>
+            {% else %}
+
+            {% endif %}
+        {% endif %}
+
+        {% if user_type == "Students" and not info %}
+            <h2>Select Information</h2>
+            <br>
+            <form action="/global_admin/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{location}}>
+                <input type="hidden" name="user_type" value="Students">
+                <input type="hidden" name="info" value="Profile">
+                <button type="submit" class="btn btn-info btn-block">Profile</button>
+            </form>
+
+            <br><br>
+
+            <form action="/global_admin/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{location}}>
+                <input type="hidden" name="user_type" value="Students">
+                <input type="hidden" name="info" value="Attendance">
+                <button type="submit" class="btn btn-info btn-block">Attendance</button>
+            </form>
+        {% else %}
+        {% endif %}
 
 
-    {% block content %}
 
+        {% if info %}
+            Location is : {{location}} <br>
+            User type is: {{user_type}} <br>
+            info type is: {{info}}
 
-    {% endblock %}
+        {% endif %}
 
-        <script src="{% static "global_admin/js/global_home.js" %}"></script>
-
-    </body>
-</html>
+{% endblock %}

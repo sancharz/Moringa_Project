@@ -1,0 +1,32 @@
+{% extends "local_admin/local_base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <link href= "{% static "global_admin/css/global_admin/.css" %}" rel="stylesheet">
+
+    <div id="title">
+        <h1> Welcome Local Adminstrator </h1>
+    </div>
+
+            <br><br>
+            <h2>Select Student Information Type</h2>
+            <br>
+            <form action="/local_admin/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="info" value="Profile">
+                <input type="hidden" name="location" value={{ location }}>
+                <button type="submit" class="btn btn-info btn-block">Profile</button>
+            </form>
+
+            <br><br>
+
+            <form action="/local_admin/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="info" value="Attendance">
+                <input type="hidden" name="location" value={{ location }}>
+                <button type="submit" class="btn btn-info btn-block">Attendance</button>
+            </form>
+
+
+{% endblock %}

@@ -6,17 +6,19 @@
         <meta charset="UTF-8">
         <title> Local Adminstrator </title>
 
-
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link href= "{% static "global_admin/css/global_home.css" %}" rel="stylesheet">
     </head>
 
     <body>
         <div class="topnav" id="myTopnav">
-          <!-- the link below needs to be changed once the template has been made - sancharz -->
-          <a href= "/location_view">View Student Records</a>
-          <a href= "/view_profile">Profile</a>
+          <a href="/local_admin">Home</a>
+          <a href="/view_profile">Profile</a>
+          <!-- redirect to login page when a user logs out - sancharz -->
+          <a href="/login">Log Out</a>
+
         </div>
-        <h1> Welcome Local Adminstrator </h1>
+
 
 
     {% block content %}

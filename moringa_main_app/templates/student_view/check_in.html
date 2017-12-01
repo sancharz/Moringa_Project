@@ -1,8 +1,8 @@
 {% extends "student_view/student_view_base.html" %}
 
 {% block main_content %}
-    <h1>Student Attendance -- You're  <span style="color: #ff0000"><b>{{ student_status }}</b></span>.</h1>
-    <p>some (message){{ message }} goes here depending on the student's status</p>
+    <h1>Student Attendance Status - You're  <span style="color: #ff0000"><b>{{ student_status }}</b></span>.</h1>
+    <p>{{ message }} </p>
 
     <form action="/check_in/" method="post">
         {% csrf_token %}

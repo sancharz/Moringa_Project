@@ -11,6 +11,7 @@ urlpatterns = [
 
     #LOGIN AND SIGN-UP URL mappings 
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^login/signup/$', views.signup, name='signup'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
 

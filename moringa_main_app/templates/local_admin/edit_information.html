@@ -1,0 +1,119 @@
+{% extends "local_admin/local_base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <link href= "{% static "global_admin/css/view_information.css" %}" rel="stylesheet">
+
+    <div id="title">
+        {% if user_type == "Local Admins" %}
+            <h1>Information for {{user_type}} of {{location}}</h1>
+        {% endif %}
+
+        {% if user_type == "Students" %}
+            <h1>Edit {{ info }} Information for {{first}} {{last}}</h1>
+        {% endif %}
+
+    </div>
+
+    {% if user_type == "Students" and info == "Profile" %}
+        <div class="container">
+
+          <table class="table table-striped">
+
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Program</th>
+                <th>Cohort</th>
+              </tr>
+            </thead>
+          <tbody>
+            <form action="/edit_information_local/" method="post" id="edit-form">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{ location }}>
+                <input type="hidden" name="info" value={{ info }}>
+                <input type="hidden" name="user_type" value={{ user_type }}>
+                <input type="hidden" name="edit" value="true">
+                <tr>
+                    <td><input type="text" name="first" value={{ first }}></td>
+                    <td><input type="text" name="last" value={{ last }}></td>
+                    <td><input type="text" name="email" value={{ email }}></td>
+                    <td>
+                        <input type="radio" id="prep" name="program" value="prep">
+                        <label for="prep">Prep</label>
+                        <br>
+                        <input type="radio" id="core" name="program" value="core">
+                        <label for="prep">Core</label>
+{#                        <input type="text" name="program" value={{ program }}>#}
+                    </td>
+                    <td>
+                        <input type="text" name="cohort" value={{ cohort }}>
+                    </td>
+                </tr>
+
+
+          </tbody>
+
+        </table>
+            <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+
+        </div>
+    {% endif %}
+
+    {% if user_type == "Students" and info == "Attendance" %}
+        <div class="container">
+
+          <table class="table table-striped">
+
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Excuse</th>
+              </tr>
+            </thead>
+          <tbody>
+            <form action="/edit_information_local/" method="post" id="edit-form">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{ location }}>
+                <input type="hidden" name="info" value={{ info }}>
+                <input type="hidden" name="user_type" value={{ user_type }}>
+                <input type="hidden" name="edit" value="true">
+                <tr>
+                    <td>{{ first }}</td>
+                    <td>{{ last }}</td>
+                    <td><input type="datetime-local" name="date" value={{ date }}></td>
+                    <td>
+                        <input type="radio" name="status" value="Tardy">
+                        <label for="prep">Tardy</label>
+                        <br>
+                        <input type="radio" name="status" value="Absent">
+                        <label for="prep">Absent</label>
+                        <br>
+                        <input type="radio" name="status" value="On Time">
+                        <label for="prep">On Time</label>
+{#                        <input type="text" name="program" value={{ program }}>#}
+                    </td>
+                    <td><input type="text" name="excuse" value={{ excuse }}></td>
+                </tr>
+
+
+          </tbody>
+
+        </table>
+            <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+
+        </div>
+    {% endif %}
+
+
+
+
+{% endblock %}

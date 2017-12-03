@@ -28,7 +28,8 @@ urlpatterns = [
     #GLOBAL ADMIN URL Mappings 
     url(r'^global_admin/$', views.global_admin, name='global_admin'),
     url(r'^global_home/$', views.global_admin, name='global_home'),
-    url(r'^edit_information/$', views.edit_information, name='edit_information'),
+    url(r'^edit_information_global/$', views.edit_information_global, name='edit_information_global'),
+    url(r'^edit_information_local/$', views.edit_information_local, name='edit_information_local'),
     #do we want the admin_profile to be as_view?? - Sancharz to Jun?
     url(r'^admin_profile$', views.AdminProfileView.as_view()),
     

@@ -34,7 +34,7 @@
                         <td>{{admin.last_name}}</td>
                         <td>{{admin.email}}</td>
                         <td>
-                            <form action="/edit_information/" method="post">
+                            <form action="/edit_information_global/" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="location" value={{ location }}>
                                 <input type="hidden" name="user_type" value={{ user_type }}>
@@ -90,7 +90,7 @@
                         <td>{{student.program}}</td>
                         <td>{{student.cohort}}</td>
                         <td>
-                            <form action="/edit_information/" method="post">
+                            <form action="/edit_information_global/" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="location" value={{ location }}>
                                 <input type="hidden" name="info" value={{ info }}>
@@ -151,7 +151,7 @@
                         <td>{{student.status}}</td>
                         <td>{{student.excuse}}</td>
                         <td>
-                            <form action="/edit_information/" method="post">
+                            <form action="/edit_information_global/" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="location" value={{ location }}>
                                 <input type="hidden" name="info" value={{ info }}>

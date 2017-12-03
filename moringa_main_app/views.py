@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -71,7 +71,7 @@ def login(request):
             else:
                 return redirect('/location_view/')
         else:
-            return redirect('/login/')
+            return render_to_response('registration/login.html', {'errors': ['Wrong username and password combination']})
          
 
 # check in for students

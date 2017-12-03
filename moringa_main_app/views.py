@@ -268,7 +268,6 @@ def global_admin(request):
             if request.POST.get("user_type") == "Local Admins":
                 location = request.POST.get("location").lower()
 
-
                 local_admins = []
 
                 for admin in LocalAdmin.objects.filter(location=location):
@@ -397,50 +396,135 @@ def local_admin(request):
 @login_required()
 def edit_information(request):
     if request.method == "POST":
-        if request.POST.get("display"):
-            print(request.POST.get("email"))
-            return render(request, "global_admin_view/edit_information.html", {
-                "first": request.POST.get("first"),
-                "last": request.POST.get("last"),
-                "email": request.POST.get("email"),
-                "program": request.POST.get("program"),
-                "cohort": request.POST.get("cohort"),
-                "location": request.POST.get("location"),
-                "info": request.POST.get("info"),
-                "user_type": request.POST.get("user_type"),
-            })
-        if request.POST.get("edit"):
-            user = User.objects.filter(username=request.POST.get("email"))
-            studentInfo = Students.objects.filter(user=user)
-            user.update(first_name=request.POST.get("first"))
-            user.update(last_name=request.POST.get("last"))
-            studentInfo.update(cohort=request.POST.get("cohort"))
-            studentInfo.update(program=request.POST.get("program"))
-            students = []
+        if request.POST.get("info") == "Profile":
+            if request.POST.get("display"):
+                return render(request, "global_admin_view/edit_information.html", {
+                    "first": request.POST.get("first"),
+                    "last": request.POST.get("last"),
+                    "email": request.POST.get("email"),
+                    "program": request.POST.get("program"),
+                    "cohort": request.POST.get("cohort"),
+                    "location": request.POST.get("location"),
+                    "info": request.POST.get("info"),
+                    "user_type": request.POST.get("user_type"),
+                })
+            if request.POST.get("edit"):
+                user = User.objects.filter(username=request.POST.get("email"))
+                studentInfo = Students.objects.filter(user=user)
+                user.update(first_name=request.POST.get("first"))
+                user.update(last_name=request.POST.get("last"))
+                studentInfo.update(cohort=request.POST.get("cohort"))
+                studentInfo.update(program=request.POST.get("program"))
+                students = []
 
-            for student in Students.objects.filter(location=request.POST.get("location").lower()):
-                s = {}
-                s["program"] = student.program
-                s["cohort"] = student.cohort
-                s["email"] = student.user
-                for user in User.objects.select_related("students").filter(username=student.user):
-                    s["first_name"] = user.first_name
-                    s["last_name"] = user.last_name
-                students.append(s)
-            print(students , request.POST.get("location"))
-            return render(request, "global_admin_view/view_information.html", {
-                "location": request.POST.get("location"),
-                "user_type": request.POST.get("user_type"),
-                "info": request.POST.get("info"),
-                "students": students
-            })
+                for student in Students.objects.filter(location=request.POST.get("location").lower()):
+                    s = {}
+                    s["program"] = student.program
+                    s["cohort"] = student.cohort
+                    s["email"] = student.user
+                    for user in User.objects.select_related("students").filter(username=student.user):
+                        s["first_name"] = user.first_name
+                        s["last_name"] = user.last_name
+                    students.append(s)
+                return render(request, "global_admin_view/view_information.html", {
+                    "location": request.POST.get("location"),
+                    "user_type": request.POST.get("user_type"),
+                    "info": request.POST.get("info"),
+                    "students": students
+                })
+        if request.POST.get("info") == "Attendance":
+            if request.POST.get("display"):
+                return render(request, "global_admin_view/edit_information.html", {
+                    "first": request.POST.get("first"),
+                    "last": request.POST.get("last"),
+                    "date": request.POST.get("date"),
+                    "status": request.POST.get("status"),
+                    "excuse": request.POST.get("excuse"),
+                    "location": request.POST.get("location"),
+                    "info": request.POST.get("info"),
+                    "user_type": request.POST.get("user_type"),
+                })
+            if request.POST.get("edit"):
+                user = User.objects.filter(username=request.POST.get("email"))
+                attendanceInfo = Attendance.objects.filter(user=user)
+                user.update(first_name=request.POST.get("first"))
+                user.update(last_name=request.POST.get("last"))
+                attendanceInfo.update(date=request.POST.get("date"))
+                print(attendanceInfo)
+                if request.POST.get("status") == "Tardy":
+                    attendanceInfo.update(tardy=True)
+                elif request.POST.get("status") == "Absent":
+                    attendanceInfo.update(absent=True)
+                attendanceInfo.update(excuse=request.POST.get("excuse"))
+                students = []
+                for student in Students.objects.filter(location=request.POST.get("location").lower()):
+
+                    s = {}
+
+                    for user in User.objects.select_related("students").filter(username=student.user):
+                        s["first_name"] = user.first_name
+                        s["last_name"] = user.last_name
+                    for entry in Attendance.objects.select_related("user").filter(user=student.user):
+                        s["date"] = entry.date
+                        if entry.tardy:
+                            s["status"] = "Tardy"
+                        elif entry.absent:
+                            s["status"] = "Absent"
+                        else:
+                            s["status"] = "On Time"
+                        if not entry.excuse:
+                            s["excuse"] = "None"
+                        else:
+                            s["excuse"] = entry.excuse
+
+                    students.append(s)
+                print(Attendance.objects.select_related("user").filter(user=student.user))
+
+                return render(request, "global_admin_view/view_information.html", {
+                    "location": request.POST.get("location"),
+                    "user_type": request.POST.get("user_type"),
+                    "info": request.POST.get("info"),
+                    "students": students
+                })
+        if request.POST.get("user_type") == "Local":
+            if request.POST.get("display"):
+                return render(request, "global_admin_view/edit_information.html", {
+                    "first": request.POST.get("first"),
+                    "last": request.POST.get("last"),
+                    "email": request.POST.get("email"),
+                    "location": request.POST.get("location"),
+                    "user_type": request.POST.get("user_type"),
+                })
+            if request.POST.get("edit"):
+                user = User.objects.filter(username=request.POST.get("email"))
+                user.update(first_name=request.POST.get("first"))
+                user.update(last_name=request.POST.get("last"))
+                local_admins = []
+                print(user[0].first_name)
+                for local_admin in LocalAdmin.objects.filter(location=request.POST.get("location").lower()):
+                    l = {}
+                    l["email"] = local_admin.user
+                    for u in user:
+                        l["first_name"] = u.first_name
+                        l["last_name"] = u.last_name
+                    local_admins.append(l)
+                return render(request, "global_admin_view/view_information.html", {
+                    "location": request.POST.get("location"),
+                    "user_type": request.POST.get("user_type"),
+                    "info": request.POST.get("info"),
+                    "local_admins": local_admins
+                })
 
 
 
 
 
 
-# VIEWS FOR STUDENT_VIEW
+
+
+
+
+        # VIEWS FOR STUDENT_VIEW
 class HomePageView(TemplateView):
     template_name = 'student_view/index.html'
 class CheckInView(TemplateView):

@@ -33,6 +33,30 @@
                         <td>{{admin.first_name}}</td>
                         <td>{{admin.last_name}}</td>
                         <td>{{admin.email}}</td>
+                        <td>
+                            <form action="/edit_information/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="location" value={{ location }}>
+                                <input type="hidden" name="user_type" value={{ user_type }}>
+                                <input type="hidden" name="display" value="true">
+                                <input type="hidden" name="first" value={{ admin.first_name }}>
+                                <input type="hidden" name="last" value={{ admin.last_name }}>
+                                <input type="hidden" name="email" value={{ admin.email }}>
+
+                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/global_home/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="location" value={{ location }}>
+                                <input type="hidden" name="user_type" value={{ user_type }}>
+                                <input type="hidden" name="delete" value="true">
+                                <input type="hidden" name="email" value={{ admin.email }}>
+
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
                     </tr>
 
                 {% endfor %}
@@ -126,6 +150,22 @@
                         <td>{{student.date}}</td>
                         <td>{{student.status}}</td>
                         <td>{{student.excuse}}</td>
+                        <td>
+                            <form action="/edit_information/" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="location" value={{ location }}>
+                                <input type="hidden" name="info" value={{ info }}>
+                                <input type="hidden" name="user_type" value={{ user_type }}>
+                                <input type="hidden" name="display" value="true">
+                                <input type="hidden" name="first" value={{ student.first_name }}>
+                                <input type="hidden" name="last" value={{ student.last_name }}>
+                                <input type="hidden" name="email" value={{ student.date }}>
+                                <input type="hidden" name="program" value={{ student.status }}>
+                                <input type="hidden" name="cohort" value={{ student.excuse }}>
+
+                                <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                            </form>
+                        </td>
                     </tr>
 
                 {% endfor %}

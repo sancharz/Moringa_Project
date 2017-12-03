@@ -12,6 +12,7 @@ from moringa_main_app.models import Attendance
 from moringa_main_app.models import Students
 from moringa_main_app.models import GlobalAdmin
 from moringa_main_app.models import LocalAdmin
+from moringa_main_app.models import Location # anna: new
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -90,31 +91,127 @@ def login(request):
         else:
             # Return an 'invalid login' error message. NOT DONE
             return redirect('/login/')
+
+# edit locations - anna
+#@login_required <-- login doesn't seem to be working for local admin so i commented this for now
+def edit_locations(request):
+    # authenticate local admin
+
+    # query database for locations
+    rows = Location.objects.all()
+
+    if request.method == 'POST':
+
+        # edit existing location
+        if 'editLoc' in request.POST: 
+            locName = request.POST.get('existingLoc')
+            if not locName: # missing name
+                return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows, 'error':True})
+            else: # name exists
+                request.session['loc'] = locName
+                ips = Location.objects.filter(name=request.session['loc'])[0].ip_addresses
+                return render(request, 'local_admin/edit_locations.html', {'choosingIP': True, 'locName':locName, 'ips':ips})
+        
+        # add new location
+        elif 'addLoc' in request.POST: 
+            locName = request.POST.get('newLoc')
+            if not locName: # missing name
+                return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows, 'error':True})
+            else: # name exists
+                location = Location(name=locName) 
+                location.save()
+                request.session['loc'] = locName
+                return render(request, 'local_admin/edit_locations.html', {'choosingIP': True, 'locName':locName, 'ips':['']})
+        
+        # delete location
+        elif 'deleteLoc' in request.POST: 
+            locName = request.POST.get('existingLoc')
+            if not locName: # missing name
+                return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows, 'error':True})
+            else: # name exists
+                location = Location.objects.filter(name=locName) 
+                location.delete()
+                request.session['loc'] = None
+                return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows, 'successMsg':'Deleted ' + locName})
+
+        # return to choosing locations
+        elif 'back' in request.POST: 
+            return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows})
+
+        # add new ip address
+        elif 'addIP' in request.POST: 
+            # make sure location still exists
+            if not request.session['loc']:
+                return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows})
+            location = Location.objects.filter(name=request.session['loc'])[0]
+            ips = location.ip_addresses
+            ip = request.POST.get('newIP')
+            if not ip: # missing ip
+                return render(request, 'local_admin/edit_locations.html', {'choosingIP':True, 'locName':request.session['loc'], 'ips':ips, 'error':True})
+            else: # ip exists
+                if not ips:
+                    ips = [ip]
+                else:
+                    ips.append(ip)
+                location.ip_addresses = ips
+                location.save()
+                return render(request, 'local_admin/edit_locations.html', {'choosingIP': True, 'locName':request.session['loc'], 'ips':ips, 'successMsg':'Added ' + ip})
+        
+        # delete ip address
+        elif 'deleteIP' in request.POST: 
+            # make sure location still exists
+            if not request.session['loc']:
+                return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows})
+            location = Location.objects.filter(name=request.session['loc'])[0]
+            ips = location.ip_addresses
+            ip = request.POST.get('existingIP')
+            if not ip: # missing ip
+                return render(request, 'local_admin/edit_locations.html', {'choosingIP':True, 'locName':request.session['loc'], 'ips':ips, 'error':True})
+            else: # ip exists
+                ips.remove(ip)
+                location.ip_addresses = ips
+                location.save()
+                return render(request, 'local_admin/edit_locations.html', {'choosingIP': True, 'locName':request.session['loc'], 'ips':ips, 'successMsg':'Deleted ' + ip})
+
+    else:
+        return render(request, 'local_admin/edit_locations.html', {'choosingLoc':True, 'locations':rows})
+
+
 # check in for students - Anna Lou
 @login_required
 def check_in(request):
-    message = "" # initialize a variable to hold a message based on student status
-    status = "" # initialize a variable to hold a student status
+
+    # debugging:
+    # query = Location(id=1, name='nairobi', ip_addresses=['127.0.0.1']) 
+    # query.save()
+    # loc = Location.objects.all()[0]
+    # loc.delete()
+    # query = LocalAdmin(program='prep', user=request.user, location=loc) 
+    # query.save()
+    # return render(request, 'student_view/check_in.html', {'student_status':'test', 'message':'test'})
+
+    # initialize vars
+    status = "" # student status
+    message = "" # message to display based on student status
     tardy = True
     absent = True
 
     # check if student has already submitted attendance today
-    #rows = Attendance.objects.filter(date__date=datetime.now().date()) 
     rows = Attendance.objects.filter(date__date=datetime.now().date(), user_id=request.user.id) 
     if len(rows) > 0:
         return redirect('/view_record/')
 
-    #initialise variables
-    tardy = True
-    absent = True
-
     # get user's IP address --> https://github.com/un33k/django-ipware
     ip = get_ip(request)
-    if not ip: # if IP address not retrieved (error check)
+    if not ip: 
         print("we don't have an IP address for user")
     
-    if ip == MORINGA_IP_ADDRESS: # on campus
+    # query database for locations that match this IP
+    rows = Location.objects.filter(ip_addresses__contains=[ip])
+
+    if len(rows) > 0: # on campus
         # check time
+        
         if datetime.now().time() <= datetime.strptime('080000', '%H%M%S').time(): # on time
             tardy = False
             absent = False

@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.contrib.postgres.fields import ArrayField # anna: new
 
 #Choices
 
@@ -32,19 +33,25 @@ LOCATION_CHOICES = (
 
 class Students(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    program = models.CharField(max_length = 10, choices = PROGRAM_CHOICES ) #changed the arguments here
-    cohort = models.CharField(max_length = 1, choices = COHORT_CHOICES)#changed the arguments here
-    location = models.CharField(max_length = 20, choices = LOCATION_CHOICES)#changed the arguments here
+    program = models.CharField(max_length = 10, choices = PROGRAM_CHOICES ) 
+    cohort = models.CharField(max_length = 1, choices = COHORT_CHOICES)
+    location = models.CharField(max_length = 20, choices = LOCATION_CHOICES)
 
 
 class GlobalAdmin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+# anna: new
+class Location(models.Model):
+    name = models.CharField(max_length=20, choices = LOCATION_CHOICES)
+    ip_addresses = ArrayField(models.CharField(max_length=200))
+
+    
 class LocalAdmin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=20, choices = LOCATION_CHOICES)#changed the arguments here
-    program = models.CharField(max_length=10, choices = PROGRAM_CHOICES)#changed the arguments here
+    location = models.OneToOneField(Location, on_delete=models.CASCADE) # anna: new
+    program = models.CharField(max_length=10, choices = PROGRAM_CHOICES)
 
 
 class Attendance(models.Model):

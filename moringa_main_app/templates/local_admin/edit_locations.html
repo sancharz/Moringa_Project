@@ -1,0 +1,56 @@
+{% extends "local_admin/local_base.html" %}
+
+{% block extra_css %}
+    <style>
+        {% if error %}
+            select, input[type=text] { border:solid 2px red }
+        {% endif %}
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1 style="margin-bottom:20px">Edit Locations</h1>
+    {{ test }}
+    {% if choosingLoc %}
+    <form action="/edit_locations/" method="post">
+        {% csrf_token %}
+        <select name="existingLoc" style="margin-bottom:20px; width: 160px; margin-right:45px">
+            {% for location in locations %}
+                <option value="{{ location.name }}">{{ location.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="editLoc" class="btn btn-success btn-lrg" style="margin-right:40px">Edit Location</button>
+        <button type="submit" name="deleteLoc" class="btn btn-success btn-lrg" style="margin-right:40px">Delete Location</button>
+
+        <br><div class="form-group" style="width: 160px; float:left; margin-right: 50px">
+            <input autocomplete="off" class="form-control" name="newLoc" placeholder="Location Name" type="text"/>
+        </div>
+        <button type="submit" name="addLoc" class="btn btn-success btn-lrg">Add Location</button>
+
+        <br style="clear:both">
+        <p style="color:green">{{ successMsg }}</p>
+    </form>
+    {% endif %}
+
+    {% if choosingIP %}
+    <p>Editing: {{ locName }}</p>
+    <form action="/edit_locations/" method="post">
+        {% csrf_token %}
+        <select name="existingIP" style="margin-bottom:20px; width: 160px; margin-right:45px">
+            {% for ip in ips %}
+                <option value="{{ ip }}">{{ ip }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="deleteIP" class="btn btn-success btn-lrg" style="margin-right:40px">Delete IP Address</button>
+        
+        <br><div class="form-group" style="width: 160px; float:left; margin-right: 50px">
+            <input autocomplete="off" class="form-control" name="newIP" placeholder="IP Address" type="text"/>
+        </div>
+        <button type="submit" name="addIP" class="btn btn-success btn-lrg">Add IP Address</button>
+        
+        <br style="clear:both">
+        <p style="color:green">{{ successMsg }}</p>
+        <button type="submit" name="back" class="btn btn-info btn-lrg">Go Back</button>
+    </form>
+    {% endif %}
+{% endblock %}

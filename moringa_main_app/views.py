@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -89,7 +89,8 @@ def login(request):
                 return redirect('/global_admin/')
         else:
             # Return an 'invalid login' error message. NOT DONE
-            return redirect('/login/')
+            return render_to_response('registration/login.html', {'errors': ['Wrong username and password combination']})
+            #return redirect('/login/')
 # check in for students - Anna Lou
 @login_required
 def check_in(request):

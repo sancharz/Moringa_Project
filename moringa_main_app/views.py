@@ -265,7 +265,7 @@ def global_admin(request):
             User.objects.filter(username=request.POST.get("email")).delete()
         if request.POST.get("user_type") is not None:
             # If the user type is local admin, query database for data to display
-            if request.POST.get("user_type") == "Local Admins":
+            if request.POST.get("user_type") == "Local Admins" or "Local":
                 location = request.POST.get("location").lower()
 
                 local_admins = []
@@ -500,14 +500,18 @@ def edit_information(request):
                 user.update(first_name=request.POST.get("first"))
                 user.update(last_name=request.POST.get("last"))
                 local_admins = []
-                print(user[0].first_name)
+
+
                 for local_admin in LocalAdmin.objects.filter(location=request.POST.get("location").lower()):
-                    l = {}
-                    l["email"] = local_admin.user
-                    for u in user:
-                        l["first_name"] = u.first_name
-                        l["last_name"] = u.last_name
-                    local_admins.append(l)
+                    local = {}
+                    local["email"] = local_admin.user
+                    for user in User.objects.select_related("localadmin").filter(username=local_admin.user):
+                        local["first_name"] = user.first_name
+                        local["last_name"] = user.last_name
+                    local_admins.append(local)
+
+
+
                 return render(request, "global_admin_view/view_information.html", {
                     "location": request.POST.get("location"),
                     "user_type": request.POST.get("user_type"),

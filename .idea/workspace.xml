@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7bde1674-a759-4dbf-b8ab-a0579865f1ec" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/edit_information.html" afterPath="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/edit_information.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html" afterPath="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/view_information.html" afterPath="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/view_information.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/moringa_main_app/views.py" afterPath="$PROJECT_DIR$/moringa_main_app/views.py" />
     </list>
@@ -38,18 +39,18 @@
       <file leaf-file-name="edit_information.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/edit_information.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+            <state relative-caret-position="230">
+              <caret line="18" column="60" lean-forward="false" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/moringa_main_app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-64">
-              <caret line="280" column="0" lean-forward="true" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
+            <state relative-caret-position="3762">
+              <caret line="267" column="72" lean-forward="false" selection-start-line="267" selection-start-column="72" selection-end-line="267" selection-end-column="72" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -57,11 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="view_information.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="view_information.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/view_information.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="39" column="92" lean-forward="false" selection-start-line="39" selection-start-column="92" selection-end-line="39" selection-end-column="92" />
+            <state relative-caret-position="180">
+              <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -70,8 +71,8 @@
       <file leaf-file-name="global_home.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-20">
-              <caret line="9" column="10" lean-forward="true" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
+            <state relative-caret-position="1125">
+              <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -160,13 +161,13 @@
         <option value="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/location_view.html" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_base.html" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/local_admin/localadmin_home.html" />
-        <option value="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/local_admin/local_base.html" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/local_admin/local_home.html" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/local_admin/view_information.html" />
         <option value="$PROJECT_DIR$/moringa_main_app/urls.py" />
-        <option value="$PROJECT_DIR$/moringa_main_app/views.py" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/edit_information.html" />
+        <option value="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html" />
+        <option value="$PROJECT_DIR$/moringa_main_app/views.py" />
         <option value="$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/view_information.html" />
       </list>
     </option>
@@ -699,37 +700,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-20">
-          <caret line="9" column="10" lean-forward="true" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/edit_information.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+        <state relative-caret-position="230">
+          <caret line="18" column="60" lean-forward="false" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/view_information.html">
+    <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/global_home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="39" column="92" lean-forward="false" selection-start-line="39" selection-start-column="92" selection-end-line="39" selection-end-column="92" />
+        <state relative-caret-position="1125">
+          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/moringa_main_app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-64">
-          <caret line="280" column="0" lean-forward="true" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
+        <state relative-caret-position="3762">
+          <caret line="267" column="72" lean-forward="false" selection-start-line="267" selection-start-column="72" selection-end-line="267" selection-end-column="72" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moringa_main_app/templates/global_admin_view/view_information.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+          <folding />
         </state>
       </provider>
     </entry>

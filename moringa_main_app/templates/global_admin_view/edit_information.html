@@ -1,0 +1,134 @@
+{% extends "global_admin_view/global_base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <link href= "{% static "global_admin/css/view_information.css" %}" rel="stylesheet">
+
+    <div id="title">
+        {% if user_type == "Local Admins" %}
+            <h1>Information for {{user_type}} of {{location}}</h1>
+        {% endif %}
+
+        {% if user_type == "Students" %}
+            <h1>Edit {{ info }} Information for {{first}} {{last}}</h1>
+        {% endif %}
+
+    </div>
+
+    {% if user_type == "Local Admins" %}
+
+    {% endif %}
+
+    {% if user_type == "Students" %}
+        <div class="container">
+
+          <table class="table table-striped">
+
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Program</th>
+                <th>Cohort</th>
+              </tr>
+            </thead>
+          <tbody>
+            <form action="/edit_information/" method="post" id="edit-form">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{ location }}>
+                <input type="hidden" name="info" value={{ info }}>
+                <input type="hidden" name="user_type" value={{ user_type }}>
+                <input type="hidden" name="edit" value="true">
+                <tr>
+                    <td><input type="text" name="first" value={{ first }}></td>
+                    <td><input type="text" name="last" value={{ last }}></td>
+                    <td><input type="text" name="email" value={{ email }}></td>
+                    <td>
+                        <input type="radio" id="prep" name="program" value="prep">
+                        <label for="prep">Prep</label>
+                        <br>
+                        <input type="radio" id="core" name="program" value="core">
+                        <label for="prep">Core</label>
+{#                        <input type="text" name="program" value={{ program }}>#}
+                    </td>
+                    <td>
+                        <input type="text" name="cohort" value={{ cohort }}>
+                    </td>
+                </tr>
+
+
+          </tbody>
+
+        </table>
+            <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+
+        </div>
+    {% endif %}
+
+    {% if user_type == "Students" and info == "Attendance" %}
+        <div class="container">
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Excuse</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{student.first_name}}</td>
+                        <td>{{student.last_name}}</td>
+                        <td>{{student.date}}</td>
+                        <td>{{student.status}}</td>
+                        <td>{{student.excuse}}</td>
+                    </tr>
+
+                {% endfor %}
+            <tr>
+            <form action="/edit_information" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="location" value={{ location }}>
+                <input type="hidden" name="info" value={{ info }}>
+                <input type="hidden" name="user_type" value={{ user_type }}>
+
+                    <td>
+                        First name:<br>
+                        <input type="text" name="firstname" value= {{ student.first_name }}>
+                    </td>
+                    <td>
+                        Last name:<br>
+                        <input type="text" name="lastname" value= {{ student.last_name }}>
+                    </td>
+                    <td>
+                        Email:<br>
+                        <input type="text" name="date" value= {{ student.date }}>
+                    </td>
+                    <td>
+                        Program:<br>
+                        <input type="text" name="status" value= {{ student.status }}>
+                    </td>
+                    <td>
+                        Cohort:<br>
+                        <input type="text" name="excuse" value= {{ student.excuse }}>
+                    </td>
+            </form>
+            </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+    {% endif %}
+
+
+
+
+{% endblock %}

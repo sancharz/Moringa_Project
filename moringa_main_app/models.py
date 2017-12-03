@@ -45,7 +45,7 @@ class GlobalAdmin(models.Model):
 # anna: new
 class Location(models.Model):
     name = models.CharField(max_length=20, choices = LOCATION_CHOICES)
-    ip_addresses = ArrayField(models.CharField(max_length=200))
+    ip_addresses = ArrayField(models.CharField(max_length=200), blank=True, null=True)
 
     
 class LocalAdmin(models.Model):

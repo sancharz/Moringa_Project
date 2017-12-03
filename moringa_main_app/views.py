@@ -189,7 +189,7 @@ def view_profile(request):
     #only two of these query sets will not be empty
     #user can't be local_a and global_a at the same time
     if local_a:
-        return render(request, 'global_admin_view/admin_profile.html', {
+        return render(request, 'local_admin/admin_profile.html', {
             'first_name': cur_user[0].first_name,
             'last_name': cur_user[0].last_name,
             'program': local_a[0].program,
@@ -264,8 +264,11 @@ def global_admin(request):
         if request.POST.get("delete") == "true":
             User.objects.filter(username=request.POST.get("email")).delete()
         if request.POST.get("user_type") is not None:
+            print("getting user type")
             # If the user type is local admin, query database for data to display
-            if request.POST.get("user_type") == "Local Admins" or "Local":
+
+            if request.POST.get("user_type") == "Local Admins" or request.POST.get("user_type") =="Local":
+                print("getting local admins")
                 location = request.POST.get("location").lower()
 
                 local_admins = []
@@ -287,54 +290,57 @@ def global_admin(request):
                 })
             # If user type is student and the info type has been chosen, query database for data to display
             if request.POST.get("info") is not None:
-                    # TODO: Query db and send data to new view to show info?
-                    location = request.POST.get("location").lower()
+                print("?")
+                # TODO: Query db and send data to new view to show info?
+                location = request.POST.get("location").lower()
 
-                    students = []
+                students = []
 
-                    if request.POST.get("info") == "Profile":
-                        for student in Students.objects.filter(location=location):
-                            s = {}
-                            s["program"] = student.program
-                            s["cohort"] = student.cohort
-                            s["email"] = student.user
-                            for user in User.objects.select_related("students").filter(username=student.user):
-                                s["first_name"] = user.first_name
-                                s["last_name"] = user.last_name
-                            students.append(s)
+                if request.POST.get("info") == "Profile":
+                    print("getting profile info")
+                    for student in Students.objects.filter(location=location):
+                        s = {}
+                        s["program"] = student.program
+                        s["cohort"] = student.cohort
+                        s["email"] = student.user
+                        for user in User.objects.select_related("students").filter(username=student.user):
+                            s["first_name"] = user.first_name
+                            s["last_name"] = user.last_name
+                        students.append(s)
 
-                    if request.POST.get("info") == "Attendance":
-                        for student in Students.objects.filter(location=location):
-                            s = {}
+                if request.POST.get("info") == "Attendance":
+                    for student in Students.objects.filter(location=location):
+                        s = {}
 
-                            for user in User.objects.select_related("students").filter(username=student.user):
-                                s["first_name"] = user.first_name
-                                s["last_name"] = user.last_name
-                            for entry in Attendance.objects.select_related("user").filter(user=student.user):
-                                s["date"] = entry.date
-                                if entry.tardy:
-                                    s["status"] = "Tardy"
-                                elif entry.absent:
-                                    s["status"] = "Absent"
-                                else:
-                                    s["status"] = "On Time"
+                        for user in User.objects.select_related("students").filter(username=student.user):
+                            s["first_name"] = user.first_name
+                            s["last_name"] = user.last_name
+                        for entry in Attendance.objects.select_related("user").filter(user=student.user):
+                            s["date"] = entry.date
+                            if entry.tardy:
+                                s["status"] = "Tardy"
+                            elif entry.absent:
+                                s["status"] = "Absent"
+                            else:
+                                s["status"] = "On Time"
                                 # s["tardy"] = entry.tardy
                                 # s["absent"] = entry.absent
-                                if not entry.excuse:
-                                    s["excuse"] = "---------"
-                                else:
-                                    s["excuse"] = entry.excuse
+                            if not entry.excuse:
+                                s["excuse"] = "---------"
+                            else:
+                                s["excuse"] = entry.excuse
 
-                            students.append(s)
+                        students.append(s)
 
 
-                    return render(request, 'global_admin_view/view_information.html', {
-                        "location": request.POST.get("location"),
-                        "user_type": request.POST.get("user_type"),
-                        "info": request.POST.get("info"),
-                        "students": students
-                    })
+                return render(request, 'global_admin_view/view_information.html', {
+                    "location": request.POST.get("location"),
+                    "user_type": request.POST.get("user_type"),
+                    "info": request.POST.get("info"),
+                    "students": students
+                })
             # If user type is student and info has not been chosen yet, render template passing in location and user_type
+            print("getting info type")
             return render(request, 'global_admin_view/global_home.html', {
                 "location": request.POST.get("location"),
                 "user_type": request.POST.get("user_type")

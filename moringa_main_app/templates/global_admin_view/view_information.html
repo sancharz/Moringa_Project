@@ -6,7 +6,7 @@
     <link href= "{% static "global_admin/css/view_information.css" %}" rel="stylesheet">
 
     <div id="title">
-        {% if user_type == "Local Admins" or "Local" %}
+        {% if user_type == "Local Admins" or user_type == "Local" %}
             <h1>Information for {{user_type}} of {{location}}</h1>
         {% endif %}
 
@@ -16,7 +16,7 @@
 
     </div>
 
-    {% if user_type == "Local Admins" or "Local"%}
+    {% if user_type == "Local Admins" or user_type == "Local"%}
         <div class="container">
 
           <table class="table table-striped">

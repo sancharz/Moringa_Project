@@ -1,0 +1,31 @@
+{% extends "local_admin/local_base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+<!-- not sure what the below line is for -->
+<!-- <link href="{% static "global_admin/css/admin_profile.css" %}" rel="stylesheet">
+ -->
+ <h1> Adminstrator Profile Information</h1>
+    {% if admin_type == "local" %}
+        <ul>
+            <li>
+                First Name: {{ first_name }}
+            </li>
+            <li>
+                Last Name: {{ last_name }}
+            </li>
+            <li>
+                Program: {{ program }}
+            </li>
+            <li>
+                Location: {{ location }}
+            </li>
+            <li>
+                Email: {{ email }}
+            </li>
+        </ul>
+    {% endif %}
+
+    <a href="/edit_profile"><button type="button" class="btn btn-primary">Edit Profile</button></a>
+{% endblock %}

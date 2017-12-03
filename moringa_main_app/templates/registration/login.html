@@ -5,6 +5,9 @@
 
 {% block content %}
     <div class="container">
+{% for i in errors %}
+{{  i }}
+{% endfor %}
         <form class="form-signin" method="post" action="/login/">
              {% csrf_token %}
                 <img class="displayed" src="{% static "global_admin/images/logo.png"%}" alt="Moringa Logo">

@@ -29,7 +29,7 @@
               </tr>
             </thead>
           <tbody>
-            <form action="/edit_information/" method="post" id="edit-form">
+            <form action="/edit_information_global/" method="post" id="edit-form">
                 {% csrf_token %}
                 <input type="hidden" name="location" value={{ location }}>
                 <input type="hidden" name="info" value={{ info }}>
@@ -77,7 +77,7 @@
               </tr>
             </thead>
           <tbody>
-            <form action="/edit_information/" method="post" id="edit-form">
+            <form action="/edit_information_global/" method="post" id="edit-form">
                 {% csrf_token %}
                 <input type="hidden" name="location" value={{ location }}>
                 <input type="hidden" name="info" value={{ info }}>
@@ -125,7 +125,7 @@
               </tr>
             </thead>
           <tbody>
-            <form action="/edit_information/" method="post" id="edit-form">
+            <form action="/edit_information_global/" method="post" id="edit-form">
                 {% csrf_token %}
                 <input type="hidden" name="location" value={{ location }}>
                 <input type="hidden" name="info" value={{ info }}>
